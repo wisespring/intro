@@ -885,7 +885,7 @@
     btn.disabled = true;
 
     try {
-      await push(ref(db, 'diagnosis'), {
+      await push(ref(db, 'applications'), {
         name: document.getElementById('name').value,
         phone: document.getElementById('phone').value,
         business_type: document.getElementById('business_type').value,
