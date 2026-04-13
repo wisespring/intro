@@ -156,6 +156,31 @@
   .memo-textarea:focus { border-color: var(--accent); }
   .save-memo-btn { margin-top: 0.5rem; background: var(--ink); color: var(--paper); border: none; font-family: var(--sans); font-size: 13px; font-weight: 500; padding: 0.6rem 1.2rem; border-radius: 2px; cursor: pointer; }
   .save-memo-btn:hover { background: var(--accent); }
+  .delete-btn {
+    display: flex; align-items: center; gap: 0.4rem;
+    margin-top: 2rem; padding: 0.6rem 1.2rem;
+    border: 0.5px solid #c62828; color: #c62828;
+    background: none; font-family: var(--sans); font-size: 13px; font-weight: 500;
+    border-radius: 2px; cursor: pointer; transition: all 0.2s;
+  }
+  .delete-btn:hover { background: #c62828; color: #fff; }
+  .delete-confirm-bar {
+    display: none; margin-top: 0.8rem; padding: 1rem 1.2rem;
+    background: #fff3f3; border: 0.5px solid #ffcdd2; border-radius: 2px;
+    font-size: 13px; color: #b71c1c; line-height: 1.6;
+  }
+  .delete-confirm-bar.show { display: block; }
+  .delete-confirm-actions { display: flex; gap: 0.6rem; margin-top: 0.8rem; }
+  .delete-confirm-yes {
+    background: #c62828; color: #fff; border: none;
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    padding: 0.5rem 1rem; border-radius: 2px; cursor: pointer;
+  }
+  .delete-confirm-no {
+    background: none; border: 0.5px solid var(--line);
+    font-family: var(--sans); font-size: 13px;
+    padding: 0.5rem 1rem; border-radius: 2px; cursor: pointer; color: var(--ink-mid);
+  }
 </style>
 </head>
 <body>
@@ -226,7 +251,7 @@
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
   import { getAuth, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-  import { getDatabase, ref, get, update, child } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+  import { getDatabase, ref, get, update, remove, child } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyAua5nOaTMw5MCXkhhUk7hY_VALjPW1e_M",
@@ -394,6 +419,17 @@
         <textarea class="memo-textarea" id="memoText">${d.memo||''}</textarea>
         <button class="save-memo-btn" onclick="saveMemo()">메모 저장</button>
       </div>
+      <hr style="border:none;border-top:0.5px solid var(--line);margin:1.5rem 0">
+      <div>
+        <button class="delete-btn" onclick="showDeleteConfirm()">🗑 이 접수 삭제</button>
+        <div class="delete-confirm-bar" id="deleteConfirmBar">
+          <strong>${d.name}</strong> 님의 접수 내용을 삭제하면 복구할 수 없습니다. 정말 삭제하시겠습니까?
+          <div class="delete-confirm-actions">
+            <button class="delete-confirm-yes" onclick="deleteEntry()">삭제 확인</button>
+            <button class="delete-confirm-no" onclick="hideDeleteConfirm()">취소</button>
+          </div>
+        </div>
+      </div>
     `;
     document.getElementById('modalOverlay').classList.add('open');
   };
@@ -429,6 +465,26 @@
       if (idx >= 0) allData[idx].memo = memo;
       alert('메모가 저장되었습니다.');
     } catch (e) { alert('저장 실패: ' + e.message); }
+  };
+
+  window.showDeleteConfirm = () => {
+    document.getElementById('deleteConfirmBar').classList.add('show');
+  };
+
+  window.hideDeleteConfirm = () => {
+    document.getElementById('deleteConfirmBar').classList.remove('show');
+  };
+
+  window.deleteEntry = async () => {
+    if (!currentDoc) return;
+    try {
+      await remove(ref(db, `applications/${currentDoc.id}`));
+      allData = allData.filter(x => x.id !== currentDoc.id);
+      updateStats();
+      renderTable();
+      closeModalDirect();
+      alert('접수가 삭제되었습니다.');
+    } catch (e) { alert('삭제 실패: ' + e.message); }
   };
 </script>
 </body>
