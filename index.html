@@ -9,8 +9,8 @@
 <style>
   :root {
     --ink: #1a1714;
-    --ink-mid: #4a4540;
-    --ink-soft: #8a8278;
+    --ink-mid: #3a3530;
+    --ink-soft: #6a6460;
     --paper: #f7f4ef;
     --paper-warm: #ede8e0;
     --accent: #c4380a;
@@ -29,7 +29,7 @@
     background: var(--paper);
     color: var(--ink);
     font-family: var(--sans);
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.8;
     overflow-x: hidden;
   }
@@ -435,6 +435,66 @@
   }
   .footer-copy { font-size: 12px; }
 
+  /* DIFFERENTIATION */
+  .diff-section { background: var(--paper-warm); }
+  .diff-header {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: end; margin-bottom: 4rem;
+  }
+  .diff-intro {
+    font-family: var(--serif); font-size: 15px; line-height: 1.9;
+    color: var(--ink-mid); word-break: keep-all;
+    border-left: 2px solid var(--accent); padding-left: 1.5rem;
+  }
+  .diff-vs {
+    display: grid; grid-template-columns: 1fr 48px 1fr;
+    gap: 0; align-items: stretch;
+    border: 0.5px solid var(--line); background: #fff;
+    margin-bottom: 3rem;
+  }
+  .diff-col { padding: 2.5rem 2rem; }
+  .diff-center {
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    color: var(--ink-soft); background: var(--paper-warm);
+    border-left: 0.5px solid var(--line); border-right: 0.5px solid var(--line);
+    writing-mode: vertical-rl;
+  }
+  .diff-col-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    color: var(--ink-soft); margin-bottom: 1.5rem;
+  }
+  .diff-good .diff-col-label { color: var(--accent); }
+  .diff-list { list-style: none; }
+  .diff-list li {
+    font-size: 14px; color: var(--ink-mid); padding: 0.7rem 0;
+    border-bottom: 0.5px solid var(--line); word-break: keep-all;
+    display: flex; gap: 0.6rem; align-items: flex-start; line-height: 1.6;
+  }
+  .diff-list li:last-child { border-bottom: none; }
+  .diff-bad .diff-list li::before {
+    content: '×'; color: var(--ink-soft); font-family: var(--mono);
+    font-size: 12px; flex-shrink: 0; margin-top: 1px;
+  }
+  .diff-good .diff-list li::before {
+    content: '✓'; color: var(--accent); font-family: var(--mono);
+    font-size: 12px; flex-shrink: 0; margin-top: 1px;
+  }
+  .diff-quote-block {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 0; border-top: 0.5px solid var(--line);
+    border-left: 0.5px solid var(--line);
+  }
+  .diff-quote-item {
+    padding: 2rem 1.8rem;
+    border-right: 0.5px solid var(--line);
+    border-bottom: 0.5px solid var(--line);
+  }
+  .diff-quote-text {
+    font-family: var(--serif); font-size: 14px; line-height: 1.9;
+    color: var(--ink-mid); font-style: italic; word-break: keep-all;
+  }
+
   /* MOBILE */
   @media (max-width: 768px) {
     nav { padding: 1rem 1.5rem; }
@@ -455,6 +515,10 @@
     .container { padding: 0 1.5rem; }
     section { padding: 4rem 0; }
     .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+    .diff-header { grid-template-columns: 1fr; gap: 1.5rem; }
+    .diff-vs { grid-template-columns: 1fr; }
+    .diff-center { writing-mode: horizontal-tb; padding: 0.8rem; border-left: none; border-right: none; border-top: 0.5px solid var(--line); border-bottom: 0.5px solid var(--line); }
+    .diff-quote-block { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -496,8 +560,8 @@
         <span class="stat-label">상권·인간 분석<br>평생 현장 연구</span>
       </div>
       <div class="hero-stat">
-        <span class="stat-num">4개</span>
-        <span class="stat-label">자체 의류 쇼핑몰<br>직접 운영 경험</span>
+        <span class="stat-num">5·10곳</span>
+        <span class="stat-label">손댄 곳마다 성장시킨<br>점포와 사업들</span>
       </div>
       <div class="hero-stat">
         <span class="stat-num">0원</span>
@@ -542,6 +606,59 @@
           <strong>오픈 전에 이미 결정됐다.</strong><br>
           인테리어 계약서에 도장 찍는 순간 돌이킬 수 없습니다. 분석은 그 이전에 해야 합니다.
         </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFFERENTIATION -->
+<section class="diff-section">
+  <div class="container">
+    <div class="diff-header">
+      <div>
+        <p class="section-label">왜 다른가</p>
+        <h2 class="section-title">부동산 눈이 아닌<br>소상공인 눈으로 봅니다</h2>
+      </div>
+      <p class="diff-intro">
+        부동산은 계약 수수료가 목적입니다.<br>
+        인구수, 유동인구가 다 돈으로 보입니다.<br>
+        그 눈으로 분석하면 100% 망합니다.
+      </p>
+    </div>
+    <div class="diff-vs">
+      <div class="diff-col diff-bad">
+        <p class="diff-col-label">일반적인 상권분석</p>
+        <ul class="diff-list">
+          <li>인구수·유동인구 데이터 중심</li>
+          <li>편의시설·교통 접근성 위주</li>
+          <li>이론적 입지 점수 산출</li>
+          <li>잘되는 업종 추천 (데이터 기반)</li>
+          <li>부동산 수수료 목적의 분석</li>
+          <li>책상 앞에서 작성된 보고서</li>
+        </ul>
+      </div>
+      <div class="diff-center">VS</div>
+      <div class="diff-col diff-good">
+        <p class="diff-col-label">강다인의 현장 분석</p>
+        <ul class="diff-list">
+          <li>직접 발로 뛰며 전체 상권 조사</li>
+          <li>잘되는 가게 미스터리 쇼핑 방문</li>
+          <li>망한 가게 원인 현장 분석</li>
+          <li>운영 주체(사람) 역량까지 종합 판단</li>
+          <li>소상공인 입장의 종합경영 관점</li>
+          <li>계약 전 선행 분석이 원칙</li>
+        </ul>
+      </div>
+    </div>
+    <div class="diff-quote-block">
+      <div class="diff-quote-item">
+        <p class="diff-quote-text">"입지가 좋으면 보증금과 월세도 비쌉니다. 경쟁도 치열합니다. 그 대가를 치를 수 있는지까지 분석합니다."</p>
+      </div>
+      <div class="diff-quote-item">
+        <p class="diff-quote-text">"유동인구가 없는 외딴 곳도 안 됩니다. 상권은 여러 점포가 모여 함께 만드는 것입니다. 혼자 잘 되는 건 없습니다."</p>
+      </div>
+      <div class="diff-quote-item">
+        <p class="diff-quote-text">"상대가 죽어야 내가 살고, 같이 살아야 지역 상권이 삽니다. 그 균형을 읽는 것이 진짜 상권분석입니다."</p>
       </div>
     </div>
   </div>
