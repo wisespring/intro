@@ -73,9 +73,7 @@
     display: flex; align-items: center; gap: 0.5rem;
     font-family: var(--mono); font-size: 12px; color: var(--ink-mid);
   }
-  .stat-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-  }
+  .stat-dot { width: 8px; height: 8px; border-radius: 50%; }
 
   .admin-filters {
     padding: 1rem 2rem; display: flex; gap: 1rem; align-items: center;
@@ -103,13 +101,9 @@
     text-align: left; font-family: var(--mono); font-size: 10px;
     letter-spacing: 0.1em; color: var(--ink-soft);
     padding: 0.8rem 1rem; border-bottom: 0.5px solid var(--line);
-    background: var(--paper-warm); font-weight: 400;
-    white-space: nowrap;
+    background: var(--paper-warm); font-weight: 400; white-space: nowrap;
   }
-  tbody tr {
-    border-bottom: 0.5px solid var(--line); cursor: pointer;
-    transition: background 0.15s;
-  }
+  tbody tr { border-bottom: 0.5px solid var(--line); cursor: pointer; transition: background 0.15s; }
   tbody tr:hover { background: rgba(196,56,10,0.03); }
   td { padding: 0.9rem 1rem; vertical-align: top; }
   .td-name { font-weight: 500; white-space: nowrap; }
@@ -132,23 +126,17 @@
   .status-done { background: #e8f5e9; color: #2e7d32; }
   .status-rejected { background: #fce4ec; color: #880e4f; }
 
-  /* LOADING / EMPTY */
-  .table-message {
-    text-align: center; padding: 4rem; color: var(--ink-soft);
-    font-size: 14px;
-  }
+  .table-message { text-align: center; padding: 4rem; color: var(--ink-soft); font-size: 14px; }
 
   /* MODAL */
   .modal-overlay {
     position: fixed; inset: 0; background: rgba(26,23,20,0.7);
-    z-index: 200; display: none; align-items: center; justify-content: center;
-    padding: 2rem;
+    z-index: 200; display: none; align-items: center; justify-content: center; padding: 2rem;
   }
   .modal-overlay.open { display: flex; }
   .modal {
     background: var(--paper); width: 100%; max-width: 640px;
-    max-height: 90vh; overflow-y: auto;
-    border-radius: 2px;
+    max-height: 90vh; overflow-y: auto; border-radius: 2px;
   }
   .modal-header {
     padding: 1.5rem 2rem; border-bottom: 0.5px solid var(--line);
@@ -156,42 +144,17 @@
     position: sticky; top: 0; background: var(--paper); z-index: 1;
   }
   .modal-title { font-size: 15px; font-weight: 500; }
-  .modal-close {
-    background: none; border: none; cursor: pointer;
-    font-size: 20px; color: var(--ink-soft); line-height: 1;
-  }
+  .modal-close { background: none; border: none; cursor: pointer; font-size: 20px; color: var(--ink-soft); line-height: 1; }
   .modal-body { padding: 2rem; }
   .modal-field { margin-bottom: 1.5rem; }
-  .modal-label {
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
-    color: var(--ink-soft); margin-bottom: 0.4rem; display: block;
-  }
-  .modal-value {
-    font-size: 14px; line-height: 1.7; word-break: keep-all;
-  }
-  .modal-concern {
-    background: var(--paper-warm); padding: 1rem 1.2rem;
-    border-left: 2px solid var(--accent); font-size: 14px;
-    line-height: 1.8; word-break: keep-all;
-  }
+  .modal-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--ink-soft); margin-bottom: 0.4rem; display: block; }
+  .modal-value { font-size: 14px; line-height: 1.7; word-break: keep-all; }
+  .modal-concern { background: var(--paper-warm); padding: 1rem 1.2rem; border-left: 2px solid var(--accent); font-size: 14px; line-height: 1.8; word-break: keep-all; }
   .modal-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
-  .status-btn {
-    font-size: 12px; font-weight: 500; font-family: var(--mono);
-    padding: 0.4rem 0.8rem; border-radius: 2px; cursor: pointer;
-    border: 0.5px solid; transition: all 0.2s; letter-spacing: 0.05em;
-  }
-  .memo-textarea {
-    width: 100%; border: 0.5px solid var(--line); background: var(--paper);
-    font-family: var(--sans); font-size: 13px; font-weight: 300;
-    padding: 0.8rem 1rem; border-radius: 2px; outline: none;
-    resize: vertical; min-height: 80px; line-height: 1.7;
-  }
+  .status-btn { font-size: 12px; font-weight: 500; font-family: var(--mono); padding: 0.4rem 0.8rem; border-radius: 2px; cursor: pointer; border: 0.5px solid; transition: all 0.2s; letter-spacing: 0.05em; }
+  .memo-textarea { width: 100%; border: 0.5px solid var(--line); background: var(--paper); font-family: var(--sans); font-size: 13px; font-weight: 300; padding: 0.8rem 1rem; border-radius: 2px; outline: none; resize: vertical; min-height: 80px; line-height: 1.7; }
   .memo-textarea:focus { border-color: var(--accent); }
-  .save-memo-btn {
-    margin-top: 0.5rem; background: var(--ink); color: var(--paper);
-    border: none; font-family: var(--sans); font-size: 13px; font-weight: 500;
-    padding: 0.6rem 1.2rem; border-radius: 2px; cursor: pointer;
-  }
+  .save-memo-btn { margin-top: 0.5rem; background: var(--ink); color: var(--paper); border: none; font-family: var(--sans); font-size: 13px; font-weight: 500; padding: 0.6rem 1.2rem; border-radius: 2px; cursor: pointer; }
   .save-memo-btn:hover { background: var(--accent); }
 </style>
 </head>
@@ -201,9 +164,10 @@
 <div id="loginScreen">
   <div class="login-box">
     <p class="login-title">WISESPRING · ADMIN</p>
-    <input type="password" class="login-input" id="pwInput" placeholder="관리자 비밀번호" />
+    <input type="email" class="login-input" id="emailInput" placeholder="이메일" />
+    <input type="password" class="login-input" id="pwInput" placeholder="비밀번호" />
     <button class="login-btn" onclick="checkLogin()">로그인</button>
-    <p class="login-error" id="loginError">비밀번호가 맞지 않습니다.</p>
+    <p class="login-error" id="loginError">이메일 또는 비밀번호가 맞지 않습니다.</p>
   </div>
 </div>
 
@@ -261,46 +225,55 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-  import { getFirestore, collection, getDocs, doc, updateDoc, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+  import { getAuth, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+  import { getDatabase, ref, get, update, child } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-  // TODO: Firebase 설정값 교체 필요 (index.html과 동일)
   const firebaseConfig = {
     apiKey: "AIzaSyAua5nOaTMw5MCXkhhUk7hY_VALjPW1e_M",
     authDomain: "area-insight.firebaseapp.com",
     projectId: "area-insight",
     storageBucket: "area-insight.firebasestorage.app",
     messagingSenderId: "595540810642",
-    appId: "1:595540810642:web:aa13fd4d3351589d0cff4b"
+    appId: "1:595540810642:web:aa13fd4d3351589d0cff4b",
+    databaseURL: "https://area-insight-default-rtdb.asia-southeast1.firebasedatabase.app"
   };
 
   const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // 간단 비밀번호 (실제 운영 시 변경 필요)
-  const ADMIN_PW = 'wisespring2025';
+  const auth = getAuth(app);
+  const db = getDatabase(app);
 
   let allData = [];
   let currentFilter = 'all';
   let currentDoc = null;
 
-  window.checkLogin = () => {
+  // 이메일/비밀번호 로그인
+  window.checkLogin = async () => {
+    const email = document.getElementById('emailInput').value;
     const pw = document.getElementById('pwInput').value;
-    if (pw === ADMIN_PW) {
+    const errEl = document.getElementById('loginError');
+    errEl.style.display = 'none';
+    try {
+      await signInWithEmailAndPassword(auth, email, pw);
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminScreen').style.display = 'block';
       loadData();
-    } else {
-      document.getElementById('loginError').style.display = 'block';
+    } catch (e) {
+      errEl.style.display = 'block';
     }
   };
 
   document.getElementById('pwInput')?.addEventListener('keydown', e => {
     if (e.key === 'Enter') window.checkLogin();
   });
+  document.getElementById('emailInput')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') window.checkLogin();
+  });
 
-  window.logout = () => {
+  window.logout = async () => {
+    await signOut(auth);
     document.getElementById('adminScreen').style.display = 'none';
     document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('emailInput').value = '';
     document.getElementById('pwInput').value = '';
   };
 
@@ -309,9 +282,15 @@
     document.getElementById('tableMessage').style.display = 'block';
     document.getElementById('tableBody').innerHTML = '';
     try {
-      const q = query(collection(db, 'diagnosis'), orderBy('created_at', 'desc'));
-      const snap = await getDocs(q);
-      allData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const snapshot = await get(ref(db, 'applications'));
+      if (snapshot.exists()) {
+        const raw = snapshot.val();
+        allData = Object.entries(raw).map(([id, data]) => ({ id, ...data }));
+        // 최신순 정렬
+        allData.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+      } else {
+        allData = [];
+      }
       updateStats();
       renderTable();
     } catch (e) {
@@ -361,7 +340,7 @@
     const statusClass = { new: 'status-new', reviewing: 'status-reviewing', done: 'status-done', rejected: 'status-rejected' };
 
     body.innerHTML = data.map(d => {
-      const date = d.created_at ? new Date(d.created_at.seconds * 1000).toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }) : '-';
+      const date = d.created_at ? new Date(d.created_at).toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }) : '-';
       const status = d.status || 'new';
       return `<tr onclick="openModal('${d.id}')">
         <td><span class="status-badge ${statusClass[status]}">${statusLabel[status]||status}</span></td>
@@ -382,7 +361,7 @@
     if (!d) return;
     currentDoc = d;
     const statusLabel = { new: '신규', reviewing: '검토중', done: '완료', rejected: '거절' };
-    const date = d.created_at ? new Date(d.created_at.seconds * 1000).toLocaleString('ko-KR') : '-';
+    const date = d.created_at ? new Date(d.created_at).toLocaleString('ko-KR') : '-';
     document.getElementById('modalTitle').textContent = `${d.name} 님의 신청`;
     document.getElementById('modalBody').innerHTML = `
       <div class="modal-field">
@@ -395,30 +374,12 @@
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
-        <div class="modal-field" style="margin:0">
-          <span class="modal-label">이름</span>
-          <p class="modal-value">${d.name||'-'}</p>
-        </div>
-        <div class="modal-field" style="margin:0">
-          <span class="modal-label">연락처</span>
-          <p class="modal-value">${d.phone||'-'}</p>
-        </div>
-        <div class="modal-field" style="margin:0">
-          <span class="modal-label">업종</span>
-          <p class="modal-value">${d.business_type||'-'}</p>
-        </div>
-        <div class="modal-field" style="margin:0">
-          <span class="modal-label">지역</span>
-          <p class="modal-value">${d.location||'-'}</p>
-        </div>
-        <div class="modal-field" style="margin:0">
-          <span class="modal-label">투자 예정 금액</span>
-          <p class="modal-value">${d.investment||'-'}</p>
-        </div>
-        <div class="modal-field" style="margin:0">
-          <span class="modal-label">현재 단계</span>
-          <p class="modal-value">${d.stage||'-'}</p>
-        </div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">이름</span><p class="modal-value">${d.name||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">연락처</span><p class="modal-value">${d.phone||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">업종</span><p class="modal-value">${d.business_type||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">지역</span><p class="modal-value">${d.location||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">투자 예정 금액</span><p class="modal-value">${d.investment||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">현재 단계</span><p class="modal-value">${d.stage||'-'}</p></div>
       </div>
       <div class="modal-field">
         <span class="modal-label">가장 큰 고민</span>
@@ -448,7 +409,7 @@
   window.changeStatus = async (status) => {
     if (!currentDoc) return;
     try {
-      await updateDoc(doc(db, 'diagnosis', currentDoc.id), { status });
+      await update(ref(db, `applications/${currentDoc.id}`), { status });
       currentDoc.status = status;
       const idx = allData.findIndex(x => x.id === currentDoc.id);
       if (idx >= 0) allData[idx].status = status;
@@ -462,7 +423,7 @@
     if (!currentDoc) return;
     const memo = document.getElementById('memoText').value;
     try {
-      await updateDoc(doc(db, 'diagnosis', currentDoc.id), { memo });
+      await update(ref(db, `applications/${currentDoc.id}`), { memo });
       currentDoc.memo = memo;
       const idx = allData.findIndex(x => x.id === currentDoc.id);
       if (idx >= 0) allData[idx].memo = memo;
