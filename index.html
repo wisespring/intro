@@ -863,20 +863,20 @@
 <!-- Firebase -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-  import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+  import { getDatabase, ref, push, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-  // TODO: Firebase 설정값 교체 필요
   const firebaseConfig = {
     apiKey: "AIzaSyAua5nOaTMw5MCXkhhUk7hY_VALjPW1e_M",
     authDomain: "area-insight.firebaseapp.com",
     projectId: "area-insight",
     storageBucket: "area-insight.firebasestorage.app",
     messagingSenderId: "595540810642",
-    appId: "1:595540810642:web:aa13fd4d3351589d0cff4b"
+    appId: "1:595540810642:web:aa13fd4d3351589d0cff4b",
+    databaseURL: "https://area-insight-default-rtdb.asia-southeast1.firebasedatabase.app"  // ← 이 줄 추가 필요!
   };
 
   const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  const db = getDatabase(app);
 
   document.getElementById('diagnosisForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -885,7 +885,7 @@
     btn.disabled = true;
 
     try {
-      await addDoc(collection(db, 'diagnosis'), {
+      await push(ref(db, 'diagnosis'), {
         name: document.getElementById('name').value,
         phone: document.getElementById('phone').value,
         business_type: document.getElementById('business_type').value,
@@ -894,7 +894,7 @@
         stage: document.getElementById('stage').value,
         concern: document.getElementById('concern').value,
         status: 'new',
-        created_at: serverTimestamp()
+        created_at: Date.now()
       });
       btn.textContent = '신청 완료! 곧 연락드리겠습니다.';
       btn.style.background = '#2e7d32';
