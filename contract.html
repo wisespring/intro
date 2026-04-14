@@ -194,7 +194,9 @@
 
   /* PRINT */
   @media print {
-    nav, .form-section, .btn-submit, .submit-area, .agree-box, .complete-actions { display: none !important; }
+    nav, .form-section, .btn-submit, .submit-area,
+    .agree-box, .complete-actions, #completeScreen { display: none !important; }
+    #mainContent { display: block !important; }
     .page-wrap { padding-top: 2rem; }
     body { background: #fff; }
   }
@@ -450,7 +452,7 @@
   <p class="complete-ref" id="contractRef">접수번호: —</p>
   <div class="complete-actions">
     <a href="index.html" class="btn-outline">메인으로 돌아가기</a>
-    <button class="btn-outline" onclick="window.print()">계약서 출력</button>
+    <button class="btn-outline" onclick="printContract()">계약서 출력</button>
   </div>
 </div>
 
@@ -535,6 +537,11 @@
       btn.textContent = '계약 신청 완료';
       btn.disabled = false;
     }
+  };
+  window.printContract = () => {
+    document.getElementById('mainContent').style.display = 'block';
+    window.print();
+    document.getElementById('mainContent').style.display = 'none';
   };
 </script>
 
