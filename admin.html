@@ -302,7 +302,7 @@
 </div>
 
 <script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+  import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence, browserSessionPersistence } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
   import { getDatabase, ref, get, update, remove, child } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
@@ -316,7 +316,7 @@
     databaseURL: "https://area-insight-default-rtdb.asia-southeast1.firebasedatabase.app"
   };
 
-  const app = initializeApp(firebaseConfig);
+  const app = getApps().find(a => a.name === '[DEFAULT]') || initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getDatabase(app);
 
@@ -330,7 +330,7 @@
     appId: "1:719137707347:web:95fdf2d8edb996f2f63da6",
     databaseURL: "https://contract-366e5-default-rtdb.asia-southeast1.firebasedatabase.app"
   };
-  const contractApp = initializeApp(contractConfig, 'contractApp');
+  const contractApp = getApps().find(a => a.name === 'contractApp') || initializeApp(contractConfig, 'contractApp');
   const dbContract = getDatabase(contractApp);
 
   let allData = [];
@@ -616,7 +616,10 @@
       contractData = [];
       if (snap.exists()) {
         snap.forEach(child => contractData.push({ id: child.key, ...child.val() }));
+        console.log('[계약 로드] 총 건수:', contractData.length, contractData.map(d=>d.name));
         contractData.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+      } else {
+        console.log('[계약 로드] snap.exists() = false — DB 연결 또는 경로 문제');
       }
       updateContractStats();
       renderContracts();
