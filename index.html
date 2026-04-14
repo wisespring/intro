@@ -61,6 +61,59 @@
   }
   .nav-cta:hover { background: var(--accent) !important; color: #fff !important; }
 
+  /* HAMBURGER */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column; justify-content: center; gap: 5px;
+    width: 36px; height: 36px; cursor: pointer;
+    background: none; border: none; padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block; width: 22px; height: 1.5px;
+    background: var(--ink-mid);
+    transition: all 0.25s ease;
+    transform-origin: center;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* MOBILE DRAWER */
+  .nav-drawer {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 99;
+    background: rgba(247,244,239,0.97);
+    backdrop-filter: blur(12px);
+    flex-direction: column; justify-content: center; align-items: center;
+    gap: 0;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .nav-drawer.open {
+    display: flex;
+    opacity: 1;
+  }
+  .nav-drawer a {
+    font-family: var(--serif); font-size: 1.6rem; font-weight: 600;
+    color: var(--ink); text-decoration: none; letter-spacing: 0.03em;
+    padding: 1.2rem 2rem; width: 100%; text-align: center;
+    border-bottom: 0.5px solid var(--line);
+    transition: color 0.2s;
+  }
+  .nav-drawer a:first-child { border-top: 0.5px solid var(--line); }
+  .nav-drawer a:hover { color: var(--accent); }
+  .nav-drawer .drawer-cta {
+    color: var(--accent) !important;
+    margin-top: 1.5rem;
+    border: 1px solid var(--accent) !important;
+    border-radius: 2px;
+    width: auto; padding: 0.9rem 2.5rem;
+    font-size: 1rem;
+    font-family: var(--sans);
+  }
+  .nav-drawer .drawer-cta:hover { background: var(--accent) !important; color: #fff !important; }
+
   /* HERO */
   .hero {
     min-height: 100vh;
@@ -499,6 +552,7 @@
   @media (max-width: 768px) {
     nav { padding: 1rem 1.5rem; }
     .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
     .hero { grid-template-columns: 1fr; }
     .hero-left { padding: 3rem 1.5rem 2rem; }
     .hero-right { padding: 2rem 1.5rem; }
@@ -532,7 +586,18 @@
     <li><a href="#cases">사례 분석</a></li>
     <li><a href="#diagnosis" class="nav-cta">무료 진단 신청</a></li>
   </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="메뉴 열기">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- 모바일 드로어 -->
+<div class="nav-drawer" id="navDrawer">
+  <a href="#service" class="drawer-link">서비스</a>
+  <a href="#profile" class="drawer-link">전문가 소개</a>
+  <a href="#cases" class="drawer-link">사례 분석</a>
+  <a href="#diagnosis" class="drawer-cta">무료 진단 신청</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -1067,6 +1132,33 @@
       btn.style.background = '#a82e08';
       btn.disabled = false;
     }
+  });
+</script>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const drawer = document.getElementById('navDrawer');
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = drawer.classList.contains('open');
+    if (isOpen) {
+      drawer.classList.remove('open');
+      hamburger.classList.remove('open');
+      document.body.style.overflow = '';
+    } else {
+      drawer.classList.add('open');
+      hamburger.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+  });
+
+  // 드로어 링크 클릭 시 닫기
+  drawer.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      drawer.classList.remove('open');
+      hamburger.classList.remove('open');
+      document.body.style.overflow = '';
+    });
   });
 </script>
 
