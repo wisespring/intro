@@ -573,6 +573,127 @@
     .diff-vs { grid-template-columns: 1fr; }
     .diff-center { writing-mode: horizontal-tb; padding: 0.8rem; border-left: none; border-right: none; border-top: 0.5px solid var(--line); border-bottom: 0.5px solid var(--line); }
     .diff-quote-block { grid-template-columns: 1fr; }
+    .flow-arrow { display: none; }
+    .flow-grid { grid-template-columns: 1fr; }
+    .contract-section .contract-steps { grid-template-columns: 1fr; }
+    .contract-cta-box { flex-direction: column; gap: 1rem; text-align: center; }
+    .admin-panel { bottom: 1rem; right: 1rem; }
+    .admin-panel-inner { flex-direction: column; gap: 0.5rem; }
+  }
+
+  /* CONTRACT SECTION */
+  .contract-section { background: var(--paper-warm); }
+  .contract-steps {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0; margin-top: 4rem;
+    border-top: 0.5px solid var(--line);
+    border-left: 0.5px solid var(--line);
+  }
+  .contract-step-item {
+    padding: 2.5rem 2rem;
+    border-right: 0.5px solid var(--line);
+    border-bottom: 0.5px solid var(--line);
+    position: relative;
+  }
+  .contract-step-num {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--accent); letter-spacing: 0.1em;
+    display: block; margin-bottom: 1rem;
+  }
+  .contract-step-title {
+    font-family: var(--serif); font-size: 16px; font-weight: 600;
+    margin-bottom: 0.8rem; word-break: keep-all;
+  }
+  .contract-step-desc {
+    font-size: 13px; color: var(--ink-soft); line-height: 1.8;
+    word-break: keep-all;
+  }
+  .contract-step-icon {
+    position: absolute; top: 2.5rem; right: 2rem;
+    font-size: 1.4rem; opacity: 0.15;
+  }
+  .contract-cta-box {
+    margin-top: 3rem;
+    padding: 2.5rem;
+    border: 0.5px solid var(--line);
+    background: #fff;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 2rem;
+  }
+  .contract-cta-text {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-mid); line-height: 1.8; word-break: keep-all;
+  }
+  .contract-cta-text strong { color: var(--ink); }
+  .btn-contract {
+    flex-shrink: 0;
+    background: var(--ink); color: var(--paper);
+    font-size: 14px; font-weight: 500;
+    padding: 0.9rem 2rem; border-radius: 2px;
+    text-decoration: none; letter-spacing: 0.03em;
+    transition: all 0.2s; white-space: nowrap;
+    border: 1px solid var(--ink);
+  }
+  .btn-contract:hover { background: var(--accent); border-color: var(--accent); }
+  .contract-notice {
+    margin-top: 1.2rem;
+    font-size: 12px; color: var(--ink-soft);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .contract-notice::before {
+    content: '※'; color: var(--accent); font-size: 11px;
+  }
+
+  /* ADMIN PANEL */
+  .admin-panel {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .admin-panel.visible {
+    opacity: 1; pointer-events: all;
+  }
+  .admin-toggle {
+    width: 44px; height: 44px;
+    background: var(--ink); border: none;
+    border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(247,244,239,0.5); font-size: 16px;
+    transition: all 0.2s; margin-left: auto;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+  .admin-toggle:hover { background: var(--accent); color: #fff; }
+  .admin-panel-inner {
+    display: none;
+    flex-direction: column; gap: 0.6rem;
+    margin-bottom: 0.8rem;
+    background: var(--ink);
+    border: 0.5px solid rgba(247,244,239,0.15);
+    padding: 1.2rem 1.4rem;
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    min-width: 220px;
+  }
+  .admin-panel-inner.open { display: flex; }
+  .admin-panel-label {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.12em; color: rgba(247,244,239,0.35);
+    text-transform: uppercase; margin-bottom: 0.4rem;
+    border-bottom: 0.5px solid rgba(247,244,239,0.1);
+    padding-bottom: 0.5rem;
+  }
+  .admin-link {
+    display: flex; align-items: center; gap: 0.7rem;
+    font-size: 13px; color: rgba(247,244,239,0.75);
+    text-decoration: none; padding: 0.4rem 0;
+    transition: color 0.2s;
+    border-bottom: 0.5px solid rgba(247,244,239,0.08);
+  }
+  .admin-link:last-child { border-bottom: none; }
+  .admin-link:hover { color: #c4826a; }
+  .admin-link-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); flex-shrink: 0;
   }
 </style>
 </head>
@@ -584,6 +705,7 @@
     <li><a href="#service">서비스</a></li>
     <li><a href="#profile">전문가 소개</a></li>
     <li><a href="#cases">사례 분석</a></li>
+    <li><a href="#contract">계약 절차</a></li>
     <li><a href="#diagnosis" class="nav-cta">무료 진단 신청</a></li>
   </ul>
   <button class="nav-hamburger" id="hamburger" aria-label="메뉴 열기">
@@ -596,6 +718,7 @@
   <a href="#service" class="drawer-link">서비스</a>
   <a href="#profile" class="drawer-link">전문가 소개</a>
   <a href="#cases" class="drawer-link">사례 분석</a>
+  <a href="#contract" class="drawer-link">계약 절차</a>
   <a href="#diagnosis" class="drawer-cta">무료 진단 신청</a>
 </div>
 
@@ -992,6 +1115,48 @@
   </div>
 </section>
 
+<!-- CONTRACT SECTION -->
+<section id="contract" class="contract-section">
+  <div class="container">
+    <p class="section-label">계약 절차</p>
+    <h2 class="section-title">상담 후 합의가 되면<br>온라인으로 계약합니다</h2>
+    <p class="section-sub">
+      서류 없이, 만나지 않아도 됩니다.<br>
+      보험처럼 — 내용을 확인하고 신청하면 계약이 성립됩니다.
+    </p>
+    <div class="contract-steps">
+      <div class="contract-step-item">
+        <span class="contract-step-icon">📋</span>
+        <span class="contract-step-num">STEP 01</span>
+        <p class="contract-step-title">진단 신청 & 전화 상담</p>
+        <p class="contract-step-desc">아래 양식으로 신청 후, 전화 상담을 통해 서비스 진행 여부를 결정합니다. 서로 맞는지 먼저 확인합니다.</p>
+      </div>
+      <div class="contract-step-item">
+        <span class="contract-step-icon">🤝</span>
+        <span class="contract-step-num">STEP 02</span>
+        <p class="contract-step-title">조건 합의</p>
+        <p class="contract-step-desc">결제 방식(선결제 / 분할결제), 서비스 금액, 납품 일정 등을 전화 또는 문자로 최종 합의합니다.</p>
+      </div>
+      <div class="contract-step-item">
+        <span class="contract-step-icon">✍️</span>
+        <span class="contract-step-num">STEP 03</span>
+        <p class="contract-step-title">온라인 계약서 작성 & 착수</p>
+        <p class="contract-step-desc">아래 계약서 링크에서 합의 내용을 입력하고 동의하면 계약이 성립됩니다. 착수금 입금 확인 후 서비스가 시작됩니다.</p>
+      </div>
+    </div>
+    <div class="contract-cta-box">
+      <p class="contract-cta-text">
+        <strong>계약서는 전화 상담 후 안내드립니다.</strong><br>
+        전문가가 계약서 링크를 직접 전달드리며, 내용 확인 후 온라인으로 서명·접수하시면 됩니다.
+      </p>
+      <a href="https://wisespring.github.io/contract/index.html" class="btn-contract" target="_blank">계약서 바로가기 →</a>
+    </div>
+    <p class="contract-notice">계약서 작성은 상담 후 진행 확정 시에만 이루어집니다. 무료 진단 신청과는 별도입니다.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
 <!-- DIAGNOSIS FORM -->
 <section id="diagnosis" class="form-section">
   <div class="container">
@@ -1159,6 +1324,53 @@
       hamburger.classList.remove('open');
       document.body.style.overflow = '';
     });
+  });
+</script>
+
+<!-- ADMIN PANEL (숨김 - 트리플클릭으로 활성화) -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-panel-inner" id="adminPanelInner">
+    <p class="admin-panel-label">관리자 메뉴</p>
+    <a href="https://wisespring.github.io/intro/admin.html" class="admin-link" target="_blank">
+      <span class="admin-link-dot"></span>서비스 신청 관리자
+    </a>
+    <a href="https://wisespring.github.io/contract/admin_contracts.html" class="admin-link" target="_blank">
+      <span class="admin-link-dot"></span>계약 접수 관리자
+    </a>
+  </div>
+  <button class="admin-toggle" id="adminToggle" title="관리자 메뉴">⚙</button>
+</div>
+
+<script>
+  // 관리자 패널: footer 로고 트리플클릭으로 활성화
+  let clickCount = 0;
+  let clickTimer = null;
+  const adminPanel = document.getElementById('adminPanel');
+  const adminToggle = document.getElementById('adminToggle');
+  const adminPanelInner = document.getElementById('adminPanelInner');
+
+  document.querySelector('.footer-brand').addEventListener('click', () => {
+    clickCount++;
+    if (clickTimer) clearTimeout(clickTimer);
+    clickTimer = setTimeout(() => { clickCount = 0; }, 600);
+    if (clickCount >= 3) {
+      clickCount = 0;
+      adminPanel.classList.toggle('visible');
+      if (!adminPanel.classList.contains('visible')) {
+        adminPanelInner.classList.remove('open');
+      }
+    }
+  });
+
+  adminToggle.addEventListener('click', () => {
+    adminPanelInner.classList.toggle('open');
+  });
+
+  // 패널 외부 클릭 시 닫기
+  document.addEventListener('click', (e) => {
+    if (!adminPanel.contains(e.target)) {
+      adminPanelInner.classList.remove('open');
+    }
   });
 </script>
 
