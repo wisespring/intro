@@ -216,35 +216,78 @@
     </div>
   </div>
 
-  <div class="admin-stats" id="statsBar">
-    <div class="stat-pill"><div class="stat-dot" style="background:#e65100"></div><span id="cnt-new">0</span> 신규</div>
-    <div class="stat-pill"><div class="stat-dot" style="background:#0d47a1"></div><span id="cnt-reviewing">0</span> 검토중</div>
-    <div class="stat-pill"><div class="stat-dot" style="background:#2e7d32"></div><span id="cnt-done">0</span> 완료</div>
-    <div class="stat-pill"><div class="stat-dot" style="background:#880e4f"></div><span id="cnt-rejected">0</span> 거절</div>
-    <div class="stat-pill" style="margin-left:auto"><div class="stat-dot" style="background:#8a8278"></div>전체 <span id="cnt-total">0</span></div>
+  <!-- 탭 -->
+  <div style="display:flex; border-bottom:0.5px solid var(--line); background:var(--paper-warm);">
+    <button id="tab-applications" onclick="switchTab('applications')"
+      style="font-family:var(--mono);font-size:12px;letter-spacing:0.05em;padding:0.9rem 1.8rem;border:none;background:var(--ink);color:var(--paper);cursor:pointer;border-bottom:2px solid var(--accent);">
+      진단 신청
+    </button>
+    <button id="tab-contracts" onclick="switchTab('contracts')"
+      style="font-family:var(--mono);font-size:12px;letter-spacing:0.05em;padding:0.9rem 1.8rem;border:none;background:none;color:var(--ink-soft);cursor:pointer;border-bottom:2px solid transparent;">
+      계약 접수
+    </button>
   </div>
 
-  <div class="admin-filters">
-    <button class="filter-btn active" onclick="setFilter('all', this)">전체</button>
-    <button class="filter-btn" onclick="setFilter('new', this)">신규</button>
-    <button class="filter-btn" onclick="setFilter('reviewing', this)">검토중</button>
-    <button class="filter-btn" onclick="setFilter('done', this)">완료</button>
-    <button class="filter-btn" onclick="setFilter('rejected', this)">거절</button>
-    <input type="text" class="search-input" id="searchInput" placeholder="이름, 업종, 지역 검색..." oninput="renderTable()">
+  <!-- 진단 신청 탭 -->
+  <div id="panel-applications">
+    <div class="admin-stats" id="statsBar">
+      <div class="stat-pill"><div class="stat-dot" style="background:#e65100"></div><span id="cnt-new">0</span> 신규</div>
+      <div class="stat-pill"><div class="stat-dot" style="background:#0d47a1"></div><span id="cnt-reviewing">0</span> 검토중</div>
+      <div class="stat-pill"><div class="stat-dot" style="background:#2e7d32"></div><span id="cnt-done">0</span> 완료</div>
+      <div class="stat-pill"><div class="stat-dot" style="background:#880e4f"></div><span id="cnt-rejected">0</span> 거절</div>
+      <div class="stat-pill" style="margin-left:auto"><div class="stat-dot" style="background:#8a8278"></div>전체 <span id="cnt-total">0</span></div>
+    </div>
+    <div class="admin-filters">
+      <button class="filter-btn active" onclick="setFilter('all', this)">전체</button>
+      <button class="filter-btn" onclick="setFilter('new', this)">신규</button>
+      <button class="filter-btn" onclick="setFilter('reviewing', this)">검토중</button>
+      <button class="filter-btn" onclick="setFilter('done', this)">완료</button>
+      <button class="filter-btn" onclick="setFilter('rejected', this)">거절</button>
+      <input type="text" class="search-input" id="searchInput" placeholder="이름, 업종, 지역 검색..." oninput="renderTable()">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>상태</th><th>이름</th><th>연락처</th><th>업종</th>
+            <th>지역</th><th>투자금액</th><th>단계</th><th>고민</th><th>신청일</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <div id="tableMessage" class="table-message">로딩 중...</div>
+    </div>
   </div>
 
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>상태</th><th>이름</th><th>연락처</th><th>업종</th>
-          <th>지역</th><th>투자금액</th><th>단계</th><th>고민</th><th>신청일</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
-    <div id="tableMessage" class="table-message">로딩 중...</div>
+  <!-- 계약 접수 탭 -->
+  <div id="panel-contracts" style="display:none;">
+    <div class="admin-stats">
+      <div class="stat-pill"><div class="stat-dot" style="background:#e65100"></div><span id="cc-new">0</span> 신규</div>
+      <div class="stat-pill"><div class="stat-dot" style="background:#0d47a1"></div><span id="cc-confirmed">0</span> 확인완료</div>
+      <div class="stat-pill"><div class="stat-dot" style="background:#2e7d32"></div><span id="cc-done">0</span> 완료</div>
+      <div class="stat-pill" style="margin-left:auto"><div class="stat-dot" style="background:#8a8278"></div>전체 <span id="cc-total">0</span></div>
+    </div>
+    <div class="admin-filters">
+      <button class="filter-btn active" onclick="setContractFilter('all', this)">전체</button>
+      <button class="filter-btn" onclick="setContractFilter('new', this)">신규</button>
+      <button class="filter-btn" onclick="setContractFilter('confirmed', this)">확인완료</button>
+      <button class="filter-btn" onclick="setContractFilter('done', this)">완료</button>
+      <input type="text" class="search-input" id="contractSearchInput" placeholder="이름, 업종, 접수번호 검색..." oninput="renderContracts()">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>상태</th><th>접수번호</th><th>이름</th><th>연락처</th>
+            <th>업종</th><th>지역</th><th>금액</th><th>결제방식</th><th>착수금예정일</th><th>접수일</th>
+          </tr>
+        </thead>
+        <tbody id="contractTableBody"></tbody>
+      </table>
+      <div id="contractMessage" class="table-message">로딩 중...</div>
+    </div>
   </div>
+
 </div>
 
 <!-- MODAL -->
@@ -527,6 +570,166 @@
       closeModalDirect();
       alert('접수가 삭제되었습니다.');
     } catch (e) { alert('삭제 실패: ' + e.message); }
+  };
+
+  // ── 탭 전환 ──
+  let contractData = [];
+  let contractFilter = 'all';
+
+  window.switchTab = (tab) => {
+    const tabs = ['applications', 'contracts'];
+    tabs.forEach(t => {
+      const btn = document.getElementById(`tab-${t}`);
+      const panel = document.getElementById(`panel-${t}`);
+      if (t === tab) {
+        btn.style.background = 'var(--ink)'; btn.style.color = 'var(--paper)';
+        btn.style.borderBottom = '2px solid var(--accent)';
+        panel.style.display = 'block';
+      } else {
+        btn.style.background = 'none'; btn.style.color = 'var(--ink-soft)';
+        btn.style.borderBottom = '2px solid transparent';
+        panel.style.display = 'none';
+      }
+    });
+    if (tab === 'contracts' && contractData.length === 0) loadContracts();
+  };
+
+  // ── 계약 데이터 로드 ──
+  async function loadContracts() {
+    document.getElementById('contractMessage').textContent = '로딩 중...';
+    document.getElementById('contractMessage').style.display = 'block';
+    document.getElementById('contractTableBody').innerHTML = '';
+    try {
+      const snap = await get(ref(db, 'contracts'));
+      contractData = [];
+      if (snap.exists()) {
+        snap.forEach(child => contractData.push({ id: child.key, ...child.val() }));
+        contractData.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+      }
+      updateContractStats();
+      renderContracts();
+    } catch (e) {
+      document.getElementById('contractMessage').textContent = '로드 실패: ' + e.message;
+    }
+  }
+
+  function updateContractStats() {
+    const counts = { new: 0, confirmed: 0, done: 0 };
+    contractData.forEach(d => { if (counts[d.status] !== undefined) counts[d.status]++; });
+    document.getElementById('cc-new').textContent = counts.new;
+    document.getElementById('cc-confirmed').textContent = counts.confirmed;
+    document.getElementById('cc-done').textContent = counts.done;
+    document.getElementById('cc-total').textContent = contractData.length;
+  }
+
+  window.setContractFilter = (filter, btn) => {
+    contractFilter = filter;
+    document.querySelectorAll('#panel-contracts .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderContracts();
+  };
+
+  window.renderContracts = () => {
+    const search = document.getElementById('contractSearchInput').value.toLowerCase();
+    let data = contractData;
+    if (contractFilter !== 'all') data = data.filter(d => d.status === contractFilter);
+    if (search) data = data.filter(d =>
+      (d.name||'').toLowerCase().includes(search) ||
+      (d.business_type||'').toLowerCase().includes(search) ||
+      (d.contract_id||'').toLowerCase().includes(search)
+    );
+
+    const body = document.getElementById('contractTableBody');
+    const msg = document.getElementById('contractMessage');
+
+    if (data.length === 0) {
+      body.innerHTML = '';
+      msg.textContent = '해당하는 계약이 없습니다.';
+      msg.style.display = 'block';
+      return;
+    }
+    msg.style.display = 'none';
+
+    const sLabel = { new: '신규', confirmed: '확인완료', done: '완료' };
+    const sClass = { new: 'status-new', confirmed: 'status-reviewing', done: 'status-done' };
+
+    body.innerHTML = data.map(d => {
+      const date = d.created_at ? new Date(d.created_at).toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }) : '-';
+      const s = d.status || 'new';
+      return `<tr onclick="openContractModal('${d.id}')">
+        <td><span class="status-badge ${sClass[s]}">${sLabel[s]||s}</span></td>
+        <td class="td-phone">${d.contract_id||'-'}</td>
+        <td class="td-name">${d.name||'-'}</td>
+        <td class="td-phone">${d.phone||'-'}</td>
+        <td class="td-type">${d.business_type||'-'}</td>
+        <td class="td-location">${d.location||'-'}</td>
+        <td style="font-size:13px;white-space:nowrap">${d.amount||'-'}</td>
+        <td style="font-size:12px;color:var(--ink-mid)">${d.payment_type||'-'}</td>
+        <td class="td-date">${d.payment_date||'-'}</td>
+        <td class="td-date">${date}</td>
+      </tr>`;
+    }).join('');
+  };
+
+  window.openContractModal = (id) => {
+    const d = contractData.find(x => x.id === id);
+    if (!d) return;
+    currentDoc = d;
+    const date = d.created_at ? new Date(d.created_at).toLocaleString('ko-KR') : '-';
+    document.getElementById('modalTitle').textContent = `[계약] ${d.name} 님`;
+    document.getElementById('modalBody').innerHTML = `
+      <div class="modal-field">
+        <span class="modal-label">상태 변경</span>
+        <div class="modal-actions">
+          <button class="status-btn" style="border-color:#e65100;color:#e65100" onclick="changeContractStatus('new')">신규</button>
+          <button class="status-btn" style="border-color:#0d47a1;color:#0d47a1" onclick="changeContractStatus('confirmed')">확인완료</button>
+          <button class="status-btn" style="border-color:#2e7d32;color:#2e7d32" onclick="changeContractStatus('done')">완료</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+        <div class="modal-field" style="margin:0"><span class="modal-label">접수번호</span><p class="modal-value" style="font-family:var(--mono);font-size:12px">${d.contract_id||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">계약 성립일시</span><p class="modal-value" style="font-family:var(--mono);font-size:12px">${date}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">이름</span><p class="modal-value">${d.name||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">연락처</span><p class="modal-value">${d.phone||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">업종</span><p class="modal-value">${d.business_type||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">지역</span><p class="modal-value">${d.location||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">서비스 금액</span><p class="modal-value">${d.amount||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">결제 방식</span><p class="modal-value">${d.payment_type||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">착수금 예정일</span><p class="modal-value">${d.payment_date||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">주소</span><p class="modal-value">${d.address||'-'}</p></div>
+      </div>
+      ${d.note ? `<div class="modal-field"><span class="modal-label">추가 요청사항</span><div class="modal-concern">${d.note}</div></div>` : ''}
+      <div class="modal-field">
+        <span class="modal-label">메모</span>
+        <textarea class="memo-textarea" id="memoText">${d.memo||''}</textarea>
+        <button class="save-memo-btn" onclick="saveContractMemo()">메모 저장</button>
+      </div>
+    `;
+    document.getElementById('modalOverlay').classList.add('open');
+  };
+
+  window.changeContractStatus = async (status) => {
+    if (!currentDoc) return;
+    try {
+      await update(ref(db, `contracts/${currentDoc.id}`), { status });
+      const idx = contractData.findIndex(x => x.id === currentDoc.id);
+      if (idx >= 0) contractData[idx].status = status;
+      updateContractStats();
+      renderContracts();
+      const lbl = { new:'신규', confirmed:'확인완료', done:'완료' };
+      alert(`'${lbl[status]}' 으로 변경했습니다.`);
+    } catch (e) { alert('변경 실패: ' + e.message); }
+  };
+
+  window.saveContractMemo = async () => {
+    if (!currentDoc) return;
+    const memo = document.getElementById('memoText').value;
+    try {
+      await update(ref(db, `contracts/${currentDoc.id}`), { memo });
+      const idx = contractData.findIndex(x => x.id === currentDoc.id);
+      if (idx >= 0) contractData[idx].memo = memo;
+      alert('메모가 저장되었습니다.');
+    } catch (e) { alert('저장 실패: ' + e.message); }
   };
 </script>
 </body>
