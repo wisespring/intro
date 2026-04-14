@@ -407,7 +407,6 @@
       if (snapshot.exists()) {
         const raw = snapshot.val();
         allData = Object.entries(raw).map(([id, data]) => ({ id, ...data }));
-        // 최신순 정렬
         allData.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
       } else {
         allData = [];
@@ -417,6 +416,8 @@
     } catch (e) {
       document.getElementById('tableMessage').textContent = 'Firebase 설정을 확인해주세요.';
     }
+    // 계약 탭도 함께 갱신
+    loadContracts();
   };
 
   function updateStats() {
@@ -604,7 +605,7 @@
         panel.style.display = 'none';
       }
     });
-    if (tab === 'contracts' && contractData.length === 0) loadContracts();
+    if (tab === 'contracts') loadContracts();
   };
 
   // ── 계약 데이터 로드 ──
