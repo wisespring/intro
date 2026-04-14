@@ -717,6 +717,14 @@
         <textarea class="memo-textarea" id="memoText">${d.memo||''}</textarea>
         <button class="save-memo-btn" onclick="saveContractMemo()">메모 저장</button>
       </div>
+      <button class="delete-btn" onclick="showContractDeleteConfirm()">🗑 계약 삭제</button>
+      <div class="delete-confirm-bar" id="contractDeleteConfirmBar">
+        정말 삭제하시겠습니까? 삭제 후 복구할 수 없습니다.
+        <div class="delete-confirm-actions">
+          <button class="delete-confirm-yes" onclick="deleteContractEntry()">삭제</button>
+          <button class="delete-confirm-no" onclick="hideContractDeleteConfirm()">취소</button>
+        </div>
+      </div>
     `;
     document.getElementById('modalOverlay').classList.add('open');
   };
@@ -743,6 +751,28 @@
       if (idx >= 0) contractData[idx].memo = memo;
       alert('메모가 저장되었습니다.');
     } catch (e) { alert('저장 실패: ' + e.message); }
+  };
+
+  window.showContractDeleteConfirm = () => {
+    const bar = document.getElementById('contractDeleteConfirmBar');
+    if (bar) bar.classList.add('show');
+  };
+
+  window.hideContractDeleteConfirm = () => {
+    const bar = document.getElementById('contractDeleteConfirmBar');
+    if (bar) bar.classList.remove('show');
+  };
+
+  window.deleteContractEntry = async () => {
+    if (!currentDoc) return;
+    try {
+      await remove(ref(dbContract, `contracts/${currentDoc.id}`));
+      contractData = contractData.filter(x => x.id !== currentDoc.id);
+      updateContractStats();
+      renderContracts();
+      closeModalDirect();
+      alert('계약이 삭제되었습니다.');
+    } catch (e) { alert('삭제 실패: ' + e.message); }
   };
 </script>
 </body>
