@@ -610,22 +610,26 @@
 
   // ── 계약 데이터 로드 ──
   async function loadContracts() {
-    document.getElementById('contractMessage').textContent = '로딩 중...';
-    document.getElementById('contractMessage').style.display = 'block';
-    document.getElementById('contractTableBody').innerHTML = '';
-    try {
-      const snap = await get(ref(dbContract, 'contracts'));
-      contractData = [];
-      if (snap.exists()) {
-        snap.forEach(child => contractData.push({ id: child.key, ...child.val() }));
-        contractData.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
-      }
-      updateContractStats();
-      renderContracts();
-    } catch (e) {
-      document.getElementById('contractMessage').textContent = '로드 실패: ' + e.message;
+  document.getElementById('contractMessage').textContent = '로딩 중...';
+  document.getElementById('contractMessage').style.display = 'block';
+  document.getElementById('contractTableBody').innerHTML = '';
+  try {
+    const snap = await get(ref(dbContract, 'contracts'));
+    
+    // ✅ await 이후에 초기화 (race condition 방지)
+    const tempData = [];
+    if (snap.exists()) {
+      snap.forEach(child => tempData.push({ id: child.key, ...child.val() }));
+      tempData.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
     }
+    contractData = tempData; // ← 완전히 로드된 후에 한 번에 교체
+    
+    updateContractStats();
+    renderContracts();
+  } catch (e) {
+    document.getElementById('contractMessage').textContent = '로드 실패: ' + e.message;
   }
+}
 
   function updateContractStats() {
     const counts = { new: 0, confirmed: 0, done: 0 };
