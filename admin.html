@@ -615,7 +615,7 @@
       const snap = await get(ref(dbContract, 'contracts'));
       contractData = [];
       if (snap.exists()) {
-        snap.forEach(child => contractData.push({ id: child.key, ...child.val() }));
+        snap.forEach(snapshot => contractData.push({ id: snapshot.key, ...snapshot.val() }));
         console.log('[계약 로드] 총 건수:', contractData.length, contractData.map(d=>d.name));
         contractData.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
       } else {
