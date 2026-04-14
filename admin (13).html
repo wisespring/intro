@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상권분석 관리자 — 진단 신청 목록</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1714; --ink-mid: #4a4540; --ink-soft: #8a8278;
+    --paper: #f7f4ef; --paper-warm: #ede8e0;
+    --accent: #c4380a; --line: rgba(26,23,20,0.12);
+    --sans: 'Noto Sans KR', sans-serif; --mono: 'DM Mono', monospace;
+    --green: #2e7d32; --orange: #e65100; --blue: #0d47a1; --gray: #5f5e5a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 300; }
+
+  /* LOGIN */
+  #loginScreen {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  }
+  .login-box {
+    width: 360px; padding: 3rem 2.5rem;
+    border: 0.5px solid var(--line); background: #fff;
+  }
+  .login-title {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em;
+    color: var(--ink-soft); margin-bottom: 2rem;
+  }
+  .login-input {
+    width: 100%; border: 0.5px solid var(--line); background: var(--paper);
+    font-family: var(--sans); font-size: 14px; padding: 0.8rem 1rem;
+    margin-bottom: 1rem; outline: none; border-radius: 2px;
+  }
+  .login-input:focus { border-color: var(--accent); }
+  .login-btn {
+    width: 100%; background: var(--ink); color: var(--paper);
+    border: none; font-family: var(--sans); font-size: 14px; font-weight: 500;
+    padding: 0.85rem; cursor: pointer; border-radius: 2px; transition: all 0.2s;
+  }
+  .login-btn:hover { background: var(--accent); }
+  .login-error { font-size: 12px; color: var(--accent); margin-top: 0.5rem; display: none; }
+  .remember-row {
+    display: flex; align-items: center; gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .remember-row input[type="checkbox"] { accent-color: var(--accent); width: 14px; height: 14px; cursor: pointer; }
+  .remember-row label { font-size: 12px; color: var(--ink-mid); cursor: pointer; user-select: none; }
+
+  /* ADMIN */
+  #adminScreen { display: none; }
+  .admin-header {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--ink); color: var(--paper);
+    padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;
+  }
+  .admin-header-brand { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; }
+  .admin-header-right { display: flex; align-items: center; gap: 1.5rem; }
+  .refresh-btn {
+    font-family: var(--mono); font-size: 11px; color: rgba(247,244,239,0.6);
+    background: none; border: 0.5px solid rgba(247,244,239,0.2);
+    padding: 0.4rem 0.8rem; cursor: pointer; border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .refresh-btn:hover { color: var(--paper); border-color: rgba(247,244,239,0.5); }
+  .logout-btn {
+    font-size: 12px; color: rgba(247,244,239,0.5);
+    background: none; border: none; cursor: pointer; font-family: var(--sans);
+  }
+  .logout-btn:hover { color: var(--paper); }
+
+  .admin-stats {
+    background: var(--paper-warm); padding: 1.5rem 2rem;
+    display: flex; gap: 2rem; border-bottom: 0.5px solid var(--line);
+  }
+  .stat-pill {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 12px; color: var(--ink-mid);
+  }
+  .stat-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .admin-filters {
+    padding: 1rem 2rem; display: flex; gap: 1rem; align-items: center;
+    border-bottom: 0.5px solid var(--line); flex-wrap: wrap;
+  }
+  .filter-btn {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em;
+    padding: 0.4rem 0.8rem; border: 0.5px solid var(--line);
+    background: none; cursor: pointer; border-radius: 2px; color: var(--ink-mid);
+    transition: all 0.2s;
+  }
+  .filter-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .search-input {
+    font-family: var(--sans); font-size: 13px;
+    border: 0.5px solid var(--line); padding: 0.4rem 0.8rem;
+    background: var(--paper); border-radius: 2px; outline: none;
+    margin-left: auto; min-width: 200px;
+  }
+  .search-input:focus { border-color: var(--accent); }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    text-align: left; font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.1em; color: var(--ink-soft);
+    padding: 0.8rem 1rem; border-bottom: 0.5px solid var(--line);
+    background: var(--paper-warm); font-weight: 400; white-space: nowrap;
+  }
+  tbody tr { border-bottom: 0.5px solid var(--line); cursor: pointer; transition: background 0.15s; }
+  tbody tr:hover { background: rgba(196,56,10,0.03); }
+  td { padding: 0.9rem 1rem; vertical-align: top; }
+  .td-name { font-weight: 500; white-space: nowrap; }
+  .td-phone { font-family: var(--mono); font-size: 12px; color: var(--ink-mid); }
+  .td-type { white-space: nowrap; }
+  .td-location { color: var(--ink-mid); }
+  .td-invest { font-family: var(--mono); font-size: 12px; white-space: nowrap; }
+  .td-stage { font-size: 12px; color: var(--ink-mid); }
+  .td-concern { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-mid); }
+  .td-date { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); white-space: nowrap; }
+
+  /* STATUS BADGE */
+  .status-badge {
+    display: inline-block; font-size: 10px; font-weight: 500;
+    padding: 0.2rem 0.6rem; border-radius: 20px; white-space: nowrap;
+    font-family: var(--mono); letter-spacing: 0.05em;
+  }
+  .status-new { background: #fff3e0; color: #e65100; }
+  .status-reviewing { background: #e3f2fd; color: #0d47a1; }
+  .status-done { background: #e8f5e9; color: #2e7d32; }
+  .status-rejected { background: #fce4ec; color: #880e4f; }
+
+  .table-message { text-align: center; padding: 4rem; color: var(--ink-soft); font-size: 14px; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(26,23,20,0.7);
+    z-index: 200; display: none; align-items: center; justify-content: center; padding: 2rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--paper); width: 100%; max-width: 640px;
+    max-height: 90vh; overflow-y: auto; border-radius: 2px;
+  }
+  .modal-header {
+    padding: 1.5rem 2rem; border-bottom: 0.5px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; background: var(--paper); z-index: 1;
+  }
+  .modal-title { font-size: 15px; font-weight: 500; }
+  .modal-close { background: none; border: none; cursor: pointer; font-size: 20px; color: var(--ink-soft); line-height: 1; }
+  .modal-body { padding: 2rem; }
+  .modal-field { margin-bottom: 1.5rem; }
+  .modal-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--ink-soft); margin-bottom: 0.4rem; display: block; }
+  .modal-value { font-size: 14px; line-height: 1.7; word-break: keep-all; }
+  .modal-concern { background: var(--paper-warm); padding: 1rem 1.2rem; border-left: 2px solid var(--accent); font-size: 14px; line-height: 1.8; word-break: keep-all; }
+  .modal-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .status-btn { font-size: 12px; font-weight: 500; font-family: var(--mono); padding: 0.4rem 0.8rem; border-radius: 2px; cursor: pointer; border: 0.5px solid; transition: all 0.2s; letter-spacing: 0.05em; }
+  .memo-textarea { width: 100%; border: 0.5px solid var(--line); background: var(--paper); font-family: var(--sans); font-size: 13px; font-weight: 300; padding: 0.8rem 1rem; border-radius: 2px; outline: none; resize: vertical; min-height: 80px; line-height: 1.7; }
+  .memo-textarea:focus { border-color: var(--accent); }
+  .save-memo-btn { margin-top: 0.5rem; background: var(--ink); color: var(--paper); border: none; font-family: var(--sans); font-size: 13px; font-weight: 500; padding: 0.6rem 1.2rem; border-radius: 2px; cursor: pointer; }
+  .save-memo-btn:hover { background: var(--accent); }
+  .delete-btn {
+    display: flex; align-items: center; gap: 0.4rem;
+    margin-top: 2rem; padding: 0.6rem 1.2rem;
+    border: 0.5px solid #c62828; color: #c62828;
+    background: none; font-family: var(--sans); font-size: 13px; font-weight: 500;
+    border-radius: 2px; cursor: pointer; transition: all 0.2s;
+  }
+  .delete-btn:hover { background: #c62828; color: #fff; }
+  .delete-confirm-bar {
+    display: none; margin-top: 0.8rem; padding: 1rem 1.2rem;
+    background: #fff3f3; border: 0.5px solid #ffcdd2; border-radius: 2px;
+    font-size: 13px; color: #b71c1c; line-height: 1.6;
+  }
+  .delete-confirm-bar.show { display: block; }
+  .delete-confirm-actions { display: flex; gap: 0.6rem; margin-top: 0.8rem; }
+  .delete-confirm-yes {
+    background: #c62828; color: #fff; border: none;
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    padding: 0.5rem 1rem; border-radius: 2px; cursor: pointer;
+  }
+  .delete-confirm-no {
+    background: none; border: 0.5px solid var(--line);
+    font-family: var(--sans); font-size: 13px;
+    padding: 0.5rem 1rem; border-radius: 2px; cursor: pointer; color: var(--ink-mid);
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <p class="login-title">WISESPRING · ADMIN</p>
+    <input type="email" class="login-input" id="emailInput" placeholder="이메일" />
+    <input type="password" class="login-input" id="pwInput" placeholder="비밀번호" />
+    <div class="remember-row">
+      <input type="checkbox" id="rememberMe" />
+      <label for="rememberMe">로그인 상태 유지</label>
+    </div>
+    <button class="login-btn" onclick="checkLogin()">로그인</button>
+    <p class="login-error" id="loginError">이메일 또는 비밀번호가 맞지 않습니다.</p>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="adminScreen">
+  <div class="admin-header">
+    <span class="admin-header-brand">WISESPRING · ADMIN</span>
+    <div class="admin-header-right">
+      <button class="refresh-btn" onclick="loadData()">새로고침</button>
+      <button class="logout-btn" onclick="logout()">로그아웃</button>
+    </div>
+  </div>
+
+  <!-- 탭 -->
+  <div style="display:flex; border-bottom:0.5px solid var(--line); background:var(--paper-warm);">
+    <button id="tab-applications" onclick="switchTab('applications')"
+      style="font-family:var(--mono);font-size:12px;letter-spacing:0.05em;padding:0.9rem 1.8rem;border:none;background:var(--ink);color:var(--paper);cursor:pointer;border-bottom:2px solid var(--accent);">
+      진단 신청
+    </button>
+    <button id="tab-contracts" onclick="switchTab('contracts')"
+      style="font-family:var(--mono);font-size:12px;letter-spacing:0.05em;padding:0.9rem 1.8rem;border:none;background:none;color:var(--ink-soft);cursor:pointer;border-bottom:2px solid transparent;">
+      계약 접수
+    </button>
+  </div>
+
+  <!-- 진단 신청 탭 -->
+  <div id="panel-applications">
+    <div class="admin-stats" id="statsBar">
+      <div class="stat-pill"><div class="stat-dot" style="background:#e65100"></div><span id="cnt-new">0</span> 신규</div>
+      <div class="stat-pill"><div class="stat-dot" style="background:#0d47a1"></div><span id="cnt-reviewing">0</span> 검토중</div>
+      <div class="stat-pill"><div class="stat-dot" style="background:#2e7d32"></div><span id="cnt-done">0</span> 완료</div>
+      <div class="stat-pill"><div class="stat-dot" style="background:#880e4f"></div><span id="cnt-rejected">0</span> 거절</div>
+      <div class="stat-pill" style="margin-left:auto"><div class="stat-dot" style="background:#8a8278"></div>전체 <span id="cnt-total">0</span></div>
+    </div>
+    <div class="admin-filters">
+      <button class="filter-btn active" onclick="setFilter('all', this)">전체</button>
+      <button class="filter-btn" onclick="setFilter('new', this)">신규</button>
+      <button class="filter-btn" onclick="setFilter('reviewing', this)">검토중</button>
+      <button class="filter-btn" onclick="setFilter('done', this)">완료</button>
+      <button class="filter-btn" onclick="setFilter('rejected', this)">거절</button>
+      <input type="text" class="search-input" id="searchInput" placeholder="이름, 업종, 지역 검색..." oninput="renderTable()">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>상태</th><th>이름</th><th>연락처</th><th>업종</th>
+            <th>지역</th><th>투자금액</th><th>단계</th><th>고민</th><th>신청일</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <div id="tableMessage" class="table-message">로딩 중...</div>
+    </div>
+  </div>
+
+  <!-- 계약 접수 탭 -->
+  <div id="panel-contracts" style="display:none;">
+    <div class="admin-stats">
+      <div class="stat-pill"><div class="stat-dot" style="background:#e65100"></div><span id="cc-new">0</span> 신규</div>
+      <div class="stat-pill"><div class="stat-dot" style="background:#0d47a1"></div><span id="cc-confirmed">0</span> 확인완료</div>
+      <div class="stat-pill"><div class="stat-dot" style="background:#2e7d32"></div><span id="cc-done">0</span> 완료</div>
+      <div class="stat-pill" style="margin-left:auto"><div class="stat-dot" style="background:#8a8278"></div>전체 <span id="cc-total">0</span></div>
+    </div>
+    <div class="admin-filters">
+      <button class="filter-btn active" onclick="setContractFilter('all', this)">전체</button>
+      <button class="filter-btn" onclick="setContractFilter('new', this)">신규</button>
+      <button class="filter-btn" onclick="setContractFilter('confirmed', this)">확인완료</button>
+      <button class="filter-btn" onclick="setContractFilter('done', this)">완료</button>
+      <input type="text" class="search-input" id="contractSearchInput" placeholder="이름, 업종, 접수번호 검색..." oninput="renderContracts()">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>상태</th><th>접수번호</th><th>이름</th><th>연락처</th>
+            <th>업종</th><th>지역</th><th>금액</th><th>결제방식</th><th>착수금예정일</th><th>접수일</th>
+          </tr>
+        </thead>
+        <tbody id="contractTableBody"></tbody>
+      </table>
+      <div id="contractMessage" class="table-message">로딩 중...</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">신청 상세</span>
+      <button class="modal-close" onclick="closeModalDirect()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence, browserSessionPersistence } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+  import { getDatabase, ref, get, update, remove, child } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAua5nOaTMw5MCXkhhUk7hY_VALjPW1e_M",
+    authDomain: "area-insight.firebaseapp.com",
+    projectId: "area-insight",
+    storageBucket: "area-insight.firebasestorage.app",
+    messagingSenderId: "595540810642",
+    appId: "1:595540810642:web:aa13fd4d3351589d0cff4b",
+    databaseURL: "https://area-insight-default-rtdb.asia-southeast1.firebasedatabase.app"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+  let allData = [];
+  let currentFilter = 'all';
+  let currentDoc = null;
+
+  // 로그인 상태 자동 감지 (새로고침 시 세션 유지)
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminScreen').style.display = 'block';
+      loadData();
+    } else {
+      // 저장된 이메일 불러오기
+      const savedEmail = localStorage.getItem('ws_saved_email') || '';
+      const savedPw = localStorage.getItem('ws_saved_pw') || '';
+      if (savedEmail) {
+        document.getElementById('emailInput').value = savedEmail;
+        document.getElementById('pwInput').value = savedPw;
+        document.getElementById('rememberMe').checked = true;
+      }
+      document.getElementById('loginScreen').style.display = 'flex';
+    }
+  });
+
+  // 이메일/비밀번호 로그인
+  window.checkLogin = async () => {
+    const email = document.getElementById('emailInput').value;
+    const pw = document.getElementById('pwInput').value;
+    const remember = document.getElementById('rememberMe').checked;
+    const errEl = document.getElementById('loginError');
+    errEl.style.display = 'none';
+    try {
+      // 로그인 지속성 설정: 체크 시 로컬 유지, 미체크 시 세션만 유지
+      await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+      await signInWithEmailAndPassword(auth, email, pw);
+      // 체크 시 이메일/비밀번호 저장, 해제 시 삭제
+      if (remember) {
+        localStorage.setItem('ws_saved_email', email);
+        localStorage.setItem('ws_saved_pw', pw);
+      } else {
+        localStorage.removeItem('ws_saved_email');
+        localStorage.removeItem('ws_saved_pw');
+      }
+    } catch (e) {
+      errEl.style.display = 'block';
+    }
+  };
+
+  document.getElementById('pwInput')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') window.checkLogin();
+  });
+  document.getElementById('emailInput')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') window.checkLogin();
+  });
+
+  window.logout = async () => {
+    await signOut(auth);
+    localStorage.removeItem('ws_saved_email');
+    localStorage.removeItem('ws_saved_pw');
+    document.getElementById('adminScreen').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('emailInput').value = '';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('rememberMe').checked = false;
+  };
+
+  window.loadData = async () => {
+    document.getElementById('tableMessage').textContent = '로딩 중...';
+    document.getElementById('tableMessage').style.display = 'block';
+    document.getElementById('tableBody').innerHTML = '';
+    try {
+      const snapshot = await get(ref(db, 'applications'));
+      if (snapshot.exists()) {
+        const raw = snapshot.val();
+        allData = Object.entries(raw).map(([id, data]) => ({ id, ...data }));
+        // 최신순 정렬
+        allData.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+      } else {
+        allData = [];
+      }
+      updateStats();
+      renderTable();
+    } catch (e) {
+      document.getElementById('tableMessage').textContent = 'Firebase 설정을 확인해주세요.';
+    }
+  };
+
+  function updateStats() {
+    const counts = { new: 0, reviewing: 0, done: 0, rejected: 0 };
+    allData.forEach(d => { if (counts[d.status] !== undefined) counts[d.status]++; });
+    document.getElementById('cnt-new').textContent = counts.new;
+    document.getElementById('cnt-reviewing').textContent = counts.reviewing;
+    document.getElementById('cnt-done').textContent = counts.done;
+    document.getElementById('cnt-rejected').textContent = counts.rejected;
+    document.getElementById('cnt-total').textContent = allData.length;
+  }
+
+  window.setFilter = (filter, btn) => {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderTable();
+  };
+
+  window.renderTable = () => {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    let data = allData;
+    if (currentFilter !== 'all') data = data.filter(d => d.status === currentFilter);
+    if (search) data = data.filter(d =>
+      (d.name||'').toLowerCase().includes(search) ||
+      (d.business_type||'').toLowerCase().includes(search) ||
+      (d.location||'').toLowerCase().includes(search)
+    );
+
+    const body = document.getElementById('tableBody');
+    const msg = document.getElementById('tableMessage');
+
+    if (data.length === 0) {
+      body.innerHTML = '';
+      msg.textContent = '해당하는 신청이 없습니다.';
+      msg.style.display = 'block';
+      return;
+    }
+    msg.style.display = 'none';
+
+    const statusLabel = { new: '신규', reviewing: '검토중', done: '완료', rejected: '거절' };
+    const statusClass = { new: 'status-new', reviewing: 'status-reviewing', done: 'status-done', rejected: 'status-rejected' };
+
+    body.innerHTML = data.map(d => {
+      const date = d.created_at ? new Date(d.created_at).toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }) : '-';
+      const status = d.status || 'new';
+      return `<tr onclick="openModal('${d.id}')">
+        <td><span class="status-badge ${statusClass[status]}">${statusLabel[status]||status}</span></td>
+        <td class="td-name">${d.name||'-'}</td>
+        <td class="td-phone">${d.phone||'-'}</td>
+        <td class="td-type">${d.business_type||'-'}</td>
+        <td class="td-location">${d.location||'-'}</td>
+        <td class="td-invest">${d.investment||'-'}</td>
+        <td class="td-stage">${d.stage||'-'}</td>
+        <td class="td-concern">${d.concern||'-'}</td>
+        <td class="td-date">${date}</td>
+      </tr>`;
+    }).join('');
+  };
+
+  window.openModal = (id) => {
+    const d = allData.find(x => x.id === id);
+    if (!d) return;
+    currentDoc = d;
+    const statusLabel = { new: '신규', reviewing: '검토중', done: '완료', rejected: '거절' };
+    const date = d.created_at ? new Date(d.created_at).toLocaleString('ko-KR') : '-';
+    document.getElementById('modalTitle').textContent = `${d.name} 님의 신청`;
+    document.getElementById('modalBody').innerHTML = `
+      <div class="modal-field">
+        <span class="modal-label">상태 변경</span>
+        <div class="modal-actions">
+          <button class="status-btn" style="border-color:#e65100;color:#e65100" onclick="changeStatus('new')">신규</button>
+          <button class="status-btn" style="border-color:#0d47a1;color:#0d47a1" onclick="changeStatus('reviewing')">검토중</button>
+          <button class="status-btn" style="border-color:#2e7d32;color:#2e7d32" onclick="changeStatus('done')">완료</button>
+          <button class="status-btn" style="border-color:#880e4f;color:#880e4f" onclick="changeStatus('rejected')">거절</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+        <div class="modal-field" style="margin:0"><span class="modal-label">이름</span><p class="modal-value">${d.name||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">연락처</span><p class="modal-value">${d.phone||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">업종</span><p class="modal-value">${d.business_type||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">지역</span><p class="modal-value">${d.location||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">투자 예정 금액</span><p class="modal-value">${d.investment||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">현재 단계</span><p class="modal-value">${d.stage||'-'}</p></div>
+      </div>
+      <div class="modal-field">
+        <span class="modal-label">가장 큰 고민</span>
+        <div class="modal-concern">${d.concern||'-'}</div>
+      </div>
+      <div class="modal-field">
+        <span class="modal-label">신청일시</span>
+        <p class="modal-value" style="font-family:var(--mono);font-size:12px">${date}</p>
+      </div>
+      <div class="modal-field">
+        <span class="modal-label">메모</span>
+        <textarea class="memo-textarea" id="memoText">${d.memo||''}</textarea>
+        <button class="save-memo-btn" onclick="saveMemo()">메모 저장</button>
+      </div>
+      <hr style="border:none;border-top:0.5px solid var(--line);margin:1.5rem 0">
+      <div>
+        <button class="delete-btn" onclick="showDeleteConfirm()">🗑 이 접수 삭제</button>
+        <div class="delete-confirm-bar" id="deleteConfirmBar">
+          <strong>${d.name}</strong> 님의 접수를 삭제하면 복구할 수 없습니다. 정말 삭제하시겠습니까?
+          <div class="delete-confirm-actions">
+            <button class="delete-confirm-yes" onclick="deleteEntry()">삭제 확인</button>
+            <button class="delete-confirm-no" onclick="hideDeleteConfirm()">취소</button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.getElementById('modalOverlay').classList.add('open');
+  };
+
+  window.closeModal = (e) => {
+    if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+  };
+  window.closeModalDirect = () => {
+    document.getElementById('modalOverlay').classList.remove('open');
+    currentDoc = null;
+  };
+
+  window.changeStatus = async (status) => {
+    if (!currentDoc) return;
+    try {
+      await update(ref(db, `applications/${currentDoc.id}`), { status });
+      currentDoc.status = status;
+      const idx = allData.findIndex(x => x.id === currentDoc.id);
+      if (idx >= 0) allData[idx].status = status;
+      updateStats();
+      renderTable();
+      alert(`상태를 '${status}'으로 변경했습니다.`);
+    } catch (e) { alert('변경 실패: ' + e.message); }
+  };
+
+  window.saveMemo = async () => {
+    if (!currentDoc) return;
+    const memo = document.getElementById('memoText').value;
+    try {
+      await update(ref(db, `applications/${currentDoc.id}`), { memo });
+      currentDoc.memo = memo;
+      const idx = allData.findIndex(x => x.id === currentDoc.id);
+      if (idx >= 0) allData[idx].memo = memo;
+      alert('메모가 저장되었습니다.');
+    } catch (e) { alert('저장 실패: ' + e.message); }
+  };
+
+  window.showDeleteConfirm = () => {
+    const bar = document.getElementById('deleteConfirmBar');
+    if (bar) bar.classList.add('show');
+  };
+
+  window.hideDeleteConfirm = () => {
+    const bar = document.getElementById('deleteConfirmBar');
+    if (bar) bar.classList.remove('show');
+  };
+
+  window.deleteEntry = async () => {
+    if (!currentDoc) return;
+    try {
+      await remove(ref(db, `applications/${currentDoc.id}`));
+      allData = allData.filter(x => x.id !== currentDoc.id);
+      updateStats();
+      renderTable();
+      closeModalDirect();
+      alert('접수가 삭제되었습니다.');
+    } catch (e) { alert('삭제 실패: ' + e.message); }
+  };
+
+  // ── 탭 전환 ──
+  let contractData = [];
+  let contractFilter = 'all';
+
+  window.switchTab = (tab) => {
+    const tabs = ['applications', 'contracts'];
+    tabs.forEach(t => {
+      const btn = document.getElementById(`tab-${t}`);
+      const panel = document.getElementById(`panel-${t}`);
+      if (t === tab) {
+        btn.style.background = 'var(--ink)'; btn.style.color = 'var(--paper)';
+        btn.style.borderBottom = '2px solid var(--accent)';
+        panel.style.display = 'block';
+      } else {
+        btn.style.background = 'none'; btn.style.color = 'var(--ink-soft)';
+        btn.style.borderBottom = '2px solid transparent';
+        panel.style.display = 'none';
+      }
+    });
+    if (tab === 'contracts' && contractData.length === 0) loadContracts();
+  };
+
+  // ── 계약 데이터 로드 ──
+  async function loadContracts() {
+    document.getElementById('contractMessage').textContent = '로딩 중...';
+    document.getElementById('contractMessage').style.display = 'block';
+    document.getElementById('contractTableBody').innerHTML = '';
+    try {
+      const snap = await get(ref(db, 'contracts'));
+      contractData = [];
+      if (snap.exists()) {
+        snap.forEach(child => contractData.push({ id: child.key, ...child.val() }));
+        contractData.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+      }
+      updateContractStats();
+      renderContracts();
+    } catch (e) {
+      document.getElementById('contractMessage').textContent = '로드 실패: ' + e.message;
+    }
+  }
+
+  function updateContractStats() {
+    const counts = { new: 0, confirmed: 0, done: 0 };
+    contractData.forEach(d => { if (counts[d.status] !== undefined) counts[d.status]++; });
+    document.getElementById('cc-new').textContent = counts.new;
+    document.getElementById('cc-confirmed').textContent = counts.confirmed;
+    document.getElementById('cc-done').textContent = counts.done;
+    document.getElementById('cc-total').textContent = contractData.length;
+  }
+
+  window.setContractFilter = (filter, btn) => {
+    contractFilter = filter;
+    document.querySelectorAll('#panel-contracts .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderContracts();
+  };
+
+  window.renderContracts = () => {
+    const search = document.getElementById('contractSearchInput').value.toLowerCase();
+    let data = contractData;
+    if (contractFilter !== 'all') data = data.filter(d => d.status === contractFilter);
+    if (search) data = data.filter(d =>
+      (d.name||'').toLowerCase().includes(search) ||
+      (d.business_type||'').toLowerCase().includes(search) ||
+      (d.contract_id||'').toLowerCase().includes(search)
+    );
+
+    const body = document.getElementById('contractTableBody');
+    const msg = document.getElementById('contractMessage');
+
+    if (data.length === 0) {
+      body.innerHTML = '';
+      msg.textContent = '해당하는 계약이 없습니다.';
+      msg.style.display = 'block';
+      return;
+    }
+    msg.style.display = 'none';
+
+    const sLabel = { new: '신규', confirmed: '확인완료', done: '완료' };
+    const sClass = { new: 'status-new', confirmed: 'status-reviewing', done: 'status-done' };
+
+    body.innerHTML = data.map(d => {
+      const date = d.created_at ? new Date(d.created_at).toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }) : '-';
+      const s = d.status || 'new';
+      return `<tr onclick="openContractModal('${d.id}')">
+        <td><span class="status-badge ${sClass[s]}">${sLabel[s]||s}</span></td>
+        <td class="td-phone">${d.contract_id||'-'}</td>
+        <td class="td-name">${d.name||'-'}</td>
+        <td class="td-phone">${d.phone||'-'}</td>
+        <td class="td-type">${d.business_type||'-'}</td>
+        <td class="td-location">${d.location||'-'}</td>
+        <td style="font-size:13px;white-space:nowrap">${d.amount||'-'}</td>
+        <td style="font-size:12px;color:var(--ink-mid)">${d.payment_type||'-'}</td>
+        <td class="td-date">${d.payment_date||'-'}</td>
+        <td class="td-date">${date}</td>
+      </tr>`;
+    }).join('');
+  };
+
+  window.openContractModal = (id) => {
+    const d = contractData.find(x => x.id === id);
+    if (!d) return;
+    currentDoc = d;
+    const date = d.created_at ? new Date(d.created_at).toLocaleString('ko-KR') : '-';
+    document.getElementById('modalTitle').textContent = `[계약] ${d.name} 님`;
+    document.getElementById('modalBody').innerHTML = `
+      <div class="modal-field">
+        <span class="modal-label">상태 변경</span>
+        <div class="modal-actions">
+          <button class="status-btn" style="border-color:#e65100;color:#e65100" onclick="changeContractStatus('new')">신규</button>
+          <button class="status-btn" style="border-color:#0d47a1;color:#0d47a1" onclick="changeContractStatus('confirmed')">확인완료</button>
+          <button class="status-btn" style="border-color:#2e7d32;color:#2e7d32" onclick="changeContractStatus('done')">완료</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+        <div class="modal-field" style="margin:0"><span class="modal-label">접수번호</span><p class="modal-value" style="font-family:var(--mono);font-size:12px">${d.contract_id||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">계약 성립일시</span><p class="modal-value" style="font-family:var(--mono);font-size:12px">${date}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">이름</span><p class="modal-value">${d.name||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">연락처</span><p class="modal-value">${d.phone||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">업종</span><p class="modal-value">${d.business_type||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">지역</span><p class="modal-value">${d.location||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">서비스 금액</span><p class="modal-value">${d.amount||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">결제 방식</span><p class="modal-value">${d.payment_type||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">착수금 예정일</span><p class="modal-value">${d.payment_date||'-'}</p></div>
+        <div class="modal-field" style="margin:0"><span class="modal-label">주소</span><p class="modal-value">${d.address||'-'}</p></div>
+      </div>
+      ${d.note ? `<div class="modal-field"><span class="modal-label">추가 요청사항</span><div class="modal-concern">${d.note}</div></div>` : ''}
+      <div class="modal-field">
+        <span class="modal-label">메모</span>
+        <textarea class="memo-textarea" id="memoText">${d.memo||''}</textarea>
+        <button class="save-memo-btn" onclick="saveContractMemo()">메모 저장</button>
+      </div>
+    `;
+    document.getElementById('modalOverlay').classList.add('open');
+  };
+
+  window.changeContractStatus = async (status) => {
+    if (!currentDoc) return;
+    try {
+      await update(ref(db, `contracts/${currentDoc.id}`), { status });
+      const idx = contractData.findIndex(x => x.id === currentDoc.id);
+      if (idx >= 0) contractData[idx].status = status;
+      updateContractStats();
+      renderContracts();
+      const lbl = { new:'신규', confirmed:'확인완료', done:'완료' };
+      alert(`'${lbl[status]}' 으로 변경했습니다.`);
+    } catch (e) { alert('변경 실패: ' + e.message); }
+  };
+
+  window.saveContractMemo = async () => {
+    if (!currentDoc) return;
+    const memo = document.getElementById('memoText').value;
+    try {
+      await update(ref(db, `contracts/${currentDoc.id}`), { memo });
+      const idx = contractData.findIndex(x => x.id === currentDoc.id);
+      if (idx >= 0) contractData[idx].memo = memo;
+      alert('메모가 저장되었습니다.');
+    } catch (e) { alert('저장 실패: ' + e.message); }
+  };
+</script>
+</body>
+</html>
