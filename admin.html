@@ -320,6 +320,19 @@
   const auth = getAuth(app);
   const db = getDatabase(app);
 
+  // 계약 전용 DB (별도 프로젝트)
+  const contractConfig = {
+    apiKey: "AIzaSyBLJ-sl1BVA0DsKIMm9Z773VLkjzuDnkcI",
+    authDomain: "contract-366e5.firebaseapp.com",
+    projectId: "contract-366e5",
+    storageBucket: "contract-366e5.firebasestorage.app",
+    messagingSenderId: "719137707347",
+    appId: "1:719137707347:web:95fdf2d8edb996f2f63da6",
+    databaseURL: "https://contract-366e5-default-rtdb.asia-southeast1.firebasedatabase.app"
+  };
+  const contractApp = initializeApp(contractConfig, 'contractApp');
+  const dbContract = getDatabase(contractApp);
+
   let allData = [];
   let currentFilter = 'all';
   let currentDoc = null;
@@ -600,7 +613,7 @@
     document.getElementById('contractMessage').style.display = 'block';
     document.getElementById('contractTableBody').innerHTML = '';
     try {
-      const snap = await get(ref(db, 'contracts'));
+      const snap = await get(ref(dbContract, 'contracts'));
       contractData = [];
       if (snap.exists()) {
         snap.forEach(child => contractData.push({ id: child.key, ...child.val() }));
@@ -711,7 +724,7 @@
   window.changeContractStatus = async (status) => {
     if (!currentDoc) return;
     try {
-      await update(ref(db, `contracts/${currentDoc.id}`), { status });
+      await update(ref(dbContract, `contracts/${currentDoc.id}`), { status });
       const idx = contractData.findIndex(x => x.id === currentDoc.id);
       if (idx >= 0) contractData[idx].status = status;
       updateContractStats();
@@ -725,7 +738,7 @@
     if (!currentDoc) return;
     const memo = document.getElementById('memoText').value;
     try {
-      await update(ref(db, `contracts/${currentDoc.id}`), { memo });
+      await update(ref(dbContract, `contracts/${currentDoc.id}`), { memo });
       const idx = contractData.findIndex(x => x.id === currentDoc.id);
       if (idx >= 0) contractData[idx].memo = memo;
       alert('메모가 저장되었습니다.');
