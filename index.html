@@ -644,6 +644,126 @@
     content: '※'; color: var(--accent); font-size: 11px;
   }
 
+  /* HIDDEN WORK SECTION */
+  .hidden-work { background: var(--ink); color: var(--paper); }
+  .hidden-work .section-label { color: #c4826a; }
+  .hidden-work .section-title { color: var(--paper); }
+  .hidden-work .section-sub { color: rgba(247,244,239,0.65); }
+
+  .hw-intro {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: end; margin-bottom: 5rem;
+  }
+
+  .hw-timeline {
+    position: relative;
+    margin-top: 0;
+  }
+  .hw-timeline-track {
+    position: relative;
+    padding-left: 2.4rem;
+  }
+  .hw-timeline-track::before {
+    content: '';
+    position: absolute; left: 7px; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom,
+      rgba(196,56,10,0.8) 0%,
+      rgba(196,56,10,0.3) 60%,
+      rgba(196,56,10,0.08) 100%);
+  }
+  .hw-step {
+    position: relative;
+    padding: 0 0 2.4rem 1.2rem;
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: start; gap: 1rem;
+  }
+  .hw-step:last-child { padding-bottom: 0; }
+  .hw-step::before {
+    content: '';
+    position: absolute; left: -1.7rem; top: 8px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(247,244,239,0.15);
+    border: 1px solid rgba(247,244,239,0.2);
+    transition: all 0.3s;
+  }
+  .hw-step.is-field::before {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(196,56,10,0.2);
+  }
+  .hw-step-content {}
+  .hw-step-name {
+    font-family: var(--serif); font-size: 15px; font-weight: 600;
+    color: var(--paper); margin-bottom: 0.25rem; word-break: keep-all;
+  }
+  .hw-step.is-field .hw-step-name { color: var(--accent); }
+  .hw-step-desc {
+    font-size: 12px; color: rgba(247,244,239,0.45);
+    line-height: 1.7; word-break: keep-all;
+  }
+  .hw-step-tag {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.08em; white-space: nowrap;
+    padding: 0.2rem 0.55rem; border-radius: 2px;
+    margin-top: 3px;
+  }
+  .hw-tag-visible {
+    background: rgba(196,56,10,0.15);
+    color: var(--accent);
+    border: 0.5px solid rgba(196,56,10,0.3);
+  }
+  .hw-tag-hidden {
+    background: rgba(247,244,239,0.06);
+    color: rgba(247,244,239,0.3);
+    border: 0.5px solid rgba(247,244,239,0.1);
+  }
+
+  .hw-insight {
+    margin-top: 5rem;
+    padding: 3rem;
+    border: 0.5px solid rgba(247,244,239,0.12);
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+  }
+  .hw-insight-item {
+    padding: 0 2.5rem;
+    border-right: 0.5px solid rgba(247,244,239,0.1);
+  }
+  .hw-insight-item:first-child { padding-left: 0; }
+  .hw-insight-item:last-child { border-right: none; }
+  .hw-insight-num {
+    font-family: var(--serif); font-size: 2.2rem; font-weight: 700;
+    color: var(--accent); display: block; margin-bottom: 0.4rem;
+  }
+  .hw-insight-label {
+    font-size: 13px; color: rgba(247,244,239,0.6);
+    line-height: 1.7; word-break: keep-all;
+  }
+
+  .hw-closing {
+    margin-top: 3rem;
+    padding: 2.5rem;
+    border-top: 0.5px solid rgba(247,244,239,0.1);
+  }
+  .hw-closing-text {
+    font-family: var(--serif); font-size: 16px;
+    color: rgba(247,244,239,0.75); line-height: 1.9;
+    font-style: italic; word-break: keep-all;
+    border-left: 2px solid var(--accent);
+    padding-left: 1.5rem;
+  }
+  .hw-closing-text strong { color: var(--paper); font-style: normal; }
+
+  @media (max-width: 768px) {
+    .hw-intro { grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3rem; }
+    .hw-insight { grid-template-columns: 1fr 1fr; gap: 2rem; padding: 2rem 1.5rem; }
+    .hw-insight-item { padding: 0; border-right: none; border-bottom: 0.5px solid rgba(247,244,239,0.1); padding-bottom: 1.5rem; }
+    .hw-insight-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .hw-closing { padding: 2rem 0 0; }
+  }
+
   /* ADMIN PANEL */
   .admin-panel {
     position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
@@ -934,6 +1054,106 @@
           <li>상시 자문 + 분기별 현장 방문</li>
         </ul>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- HIDDEN WORK -->
+<section class="hidden-work">
+  <div class="container">
+    <div class="hw-intro">
+      <div>
+        <p class="section-label">보이지 않는 일들</p>
+        <h2 class="section-title">현장 하루가<br>전부가 아닙니다</h2>
+        <p class="section-sub" style="margin-top:1rem;">
+          눈에 보이는 건 현장 방문 하루입니다.<br>
+          그 앞뒤로 쌓인 시간과 판단이 결과를 만듭니다.
+        </p>
+      </div>
+      <div class="hw-timeline">
+        <div class="hw-timeline-track">
+          <div class="hw-step">
+            <div class="hw-step-content">
+              <p class="hw-step-name">서비스 신청 · 상담</p>
+              <p class="hw-step-desc">의뢰인의 상황, 업종, 목표를 파악합니다. 맞지 않으면 이 단계에서 거절합니다.</p>
+            </div>
+            <span class="hw-step-tag hw-tag-hidden">HIDDEN</span>
+          </div>
+          <div class="hw-step">
+            <div class="hw-step-content">
+              <p class="hw-step-name">계약</p>
+              <p class="hw-step-desc">진행 조건과 범위를 명확히 정합니다. 기대치를 맞추는 과정입니다.</p>
+            </div>
+            <span class="hw-step-tag hw-tag-hidden">HIDDEN</span>
+          </div>
+          <div class="hw-step">
+            <div class="hw-step-content">
+              <p class="hw-step-name">작업수행 계획 수립</p>
+              <p class="hw-step-desc">어떤 순서로, 어떤 관점으로 볼지 설계합니다. 현장에서 허비하지 않기 위한 준비입니다.</p>
+            </div>
+            <span class="hw-step-tag hw-tag-hidden">HIDDEN</span>
+          </div>
+          <div class="hw-step">
+            <div class="hw-step-content">
+              <p class="hw-step-name">사전 조사</p>
+              <p class="hw-step-desc">데이터, 주변 환경, 경쟁 점포 현황을 미리 파악합니다.</p>
+            </div>
+            <span class="hw-step-tag hw-tag-hidden">HIDDEN</span>
+          </div>
+          <div class="hw-step is-field">
+            <div class="hw-step-content">
+              <p class="hw-step-name">현장 답사</p>
+              <p class="hw-step-desc">직접 발로 뜁니다. 눈으로 보고, 사람을 읽고, 흐름을 감지합니다.</p>
+            </div>
+            <span class="hw-step-tag hw-tag-visible">VISIBLE</span>
+          </div>
+          <div class="hw-step">
+            <div class="hw-step-content">
+              <p class="hw-step-name">진단 및 분석</p>
+              <p class="hw-step-desc">현장에서 수집한 것을 해석합니다. 남들이 보지 못하는 부분을 짚는 단계입니다.</p>
+            </div>
+            <span class="hw-step-tag hw-tag-hidden">HIDDEN</span>
+          </div>
+          <div class="hw-step">
+            <div class="hw-step-content">
+              <p class="hw-step-name">팀 토론 · 검토</p>
+              <p class="hw-step-desc">혼자 판단하지 않습니다. 검토를 거쳐 판단의 오류를 줄입니다.</p>
+            </div>
+            <span class="hw-step-tag hw-tag-hidden">HIDDEN</span>
+          </div>
+          <div class="hw-step">
+            <div class="hw-step-content">
+              <p class="hw-step-name">보고서 작성 · 납품</p>
+              <p class="hw-step-desc">분석 결과를 의사결정에 쓸 수 있는 형태로 정리해 전달합니다.</p>
+            </div>
+            <span class="hw-step-tag hw-tag-hidden">HIDDEN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hw-insight">
+      <div class="hw-insight-item">
+        <span class="hw-insight-num">1일</span>
+        <p class="hw-insight-label">눈에 보이는 현장 작업 시간</p>
+      </div>
+      <div class="hw-insight-item">
+        <span class="hw-insight-num">8단계</span>
+        <p class="hw-insight-label">현장 전후로 진행되는 보이지 않는 작업</p>
+      </div>
+      <div class="hw-insight-item">
+        <span class="hw-insight-num">경험</span>
+        <p class="hw-insight-label">누구나 할 수 없는 통찰과 감각이 담긴 결과물</p>
+      </div>
+    </div>
+
+    <div class="hw-closing">
+      <p class="hw-closing-text">
+        단순히 상권을 조사하는 게 아닙니다.<br>
+        <strong>남들이 보지 못하는 것을 보는 능력</strong>과,
+        그 판단을 뒷받침하는 수십 년의 현장 경험이<br>
+        이 서비스를 시중에서 쉽게 찾아볼 수 없게 만드는 이유입니다.
+      </p>
     </div>
   </div>
 </section>
