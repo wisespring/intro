@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>세상을 읽는 지혜 — 강다인</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1410;
+    --paper: #f5f0e8;
+    --warm: #c8a96e;
+    --accent: #8b2e1a;
+    --muted: #7a6f5e;
+    --divider: #d4c9b0;
+    --bg-card: #faf7f0;
+    --shadow: rgba(26,20,16,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ─────────────────────────── */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 64px;
+  }
+
+  .logo {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--warm);
+    white-space: nowrap;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1.4rem;
+    height: 64px;
+    background: none;
+    border: none;
+    color: #ccc;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+    position: relative;
+  }
+
+  .nav-btn .step-num {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #444;
+    color: #ccc;
+    font-size: 0.72rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .nav-btn:hover {
+    color: var(--warm);
+    background: rgba(200,169,110,0.08);
+  }
+
+  .nav-btn.active {
+    color: var(--warm);
+    border-bottom-color: var(--warm);
+  }
+
+  .nav-btn.active .step-num {
+    background: var(--warm);
+    color: var(--ink);
+  }
+
+  .nav-arrow {
+    color: #555;
+    font-size: 0.7rem;
+    padding: 0 0.2rem;
+  }
+
+  /* ── HERO ───────────────────────────── */
+  .hero {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 3.5rem 2rem 3rem;
+    text-align: center;
+    border-bottom: 4px solid var(--warm);
+  }
+
+  .hero-subtitle {
+    font-size: 0.78rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 0.8rem;
+    font-weight: 400;
+  }
+
+  .hero h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.01em;
+  }
+
+  .hero p {
+    color: #a09585;
+    font-size: 0.88rem;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ── PROGRESS BAR ───────────────────── */
+  .progress-bar-wrap {
+    max-width: 600px;
+    margin: 2rem auto 0;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .progress-seg {
+    flex: 1;
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    transition: background 0.4s;
+  }
+
+  .progress-seg.done { background: var(--warm); }
+  .progress-seg.active { background: var(--accent); }
+
+  /* ── MAIN CONTENT ───────────────────── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  /* ── SECTION ────────────────────────── */
+  .section {
+    display: none;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .section.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── CHAPTER HEADER ─────────────────── */
+  .ch-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--divider);
+  }
+
+  .ch-badge {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--warm);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+  }
+
+  .ch-meta {
+    flex: 1;
+  }
+
+  .ch-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .ch-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+  }
+
+  .ch-desc {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+
+  /* ── QUOTE BLOCK ────────────────────── */
+  .quote-block {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 1.8rem 2rem;
+    border-left: 5px solid var(--warm);
+    margin: 2rem 0;
+    border-radius: 0 8px 8px 0;
+    position: relative;
+  }
+
+  .quote-block::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    color: var(--warm);
+    opacity: 0.4;
+    position: absolute;
+    top: -0.5rem;
+    left: 1.2rem;
+    line-height: 1;
+  }
+
+  .quote-block p {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    padding-left: 1rem;
+    font-weight: 400;
+  }
+
+  /* ── CARD ───────────────────────────── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--divider);
+    border-radius: 10px;
+    padding: 1.5rem 1.8rem;
+    margin-bottom: 1.2rem;
+    transition: box-shadow 0.2s;
+  }
+
+  .card:hover {
+    box-shadow: 0 4px 20px var(--shadow);
+  }
+
+  .card-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .card-title .icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+
+  .card p {
+    font-size: 0.88rem;
+    line-height: 1.85;
+    color: #3a3028;
+  }
+
+  /* ── GRID ───────────────────────────── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .card-grid .card {
+    margin: 0;
+  }
+
+  /* ── SECTION TITLE ──────────────────── */
+  .sec-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 2.5rem 0 1rem;
+    padding-left: 0.8rem;
+    border-left: 3px solid var(--warm);
+    color: var(--ink);
+  }
+
+  /* ── TABLE ──────────────────────────── */
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.86rem;
+  }
+
+  .styled-table th {
+    background: var(--ink);
+    color: var(--warm);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .styled-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--divider);
+    line-height: 1.6;
+    vertical-align: top;
+  }
+
+  .styled-table tr:nth-child(even) td { background: rgba(200,169,110,0.06); }
+  .styled-table tr:last-child td { border-bottom: none; }
+
+  /* ── FLOW DIAGRAM ───────────────────── */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+  }
+
+  .flow-step {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.7rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.84rem;
+    font-weight: 500;
+    text-align: center;
+    min-width: 100px;
+  }
+
+  .flow-step span {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--warm);
+    margin-bottom: 0.2rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .flow-arrow {
+    color: var(--warm);
+    font-size: 1.2rem;
+    padding: 0 0.5rem;
+  }
+
+  /* ── PILL TAGS ──────────────────────── */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .tag {
+    background: rgba(139,46,26,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(139,46,26,0.25);
+    border-radius: 20px;
+    padding: 0.25rem 0.8rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+
+  /* ── HIGHLIGHT BOX ──────────────────── */
+  .highlight {
+    background: linear-gradient(135deg, rgba(200,169,110,0.15), rgba(200,169,110,0.05));
+    border: 1px solid rgba(200,169,110,0.4);
+    border-radius: 10px;
+    padding: 1.4rem 1.6rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight .hl-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .highlight p {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+
+  /* ── NEXT BUTTON ────────────────────── */
+  .nav-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--divider);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--warm);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(139,46,26,0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--divider);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--warm);
+    color: var(--warm);
+  }
+
+  .btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* ── PERSON CARD ────────────────────── */
+  .person-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .person-card {
+    background: var(--bg-card);
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    padding: 1.2rem;
+    border-top: 3px solid var(--accent);
+  }
+
+  .person-card .name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: var(--ink);
+  }
+
+  .person-card .role {
+    font-size: 0.72rem;
+    color: var(--warm);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+  }
+
+  .person-card p {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── VARIABLE CARD ──────────────────── */
+  .var-card {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    background: var(--bg-card);
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .var-num {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--warm);
+    color: var(--ink);
+    font-weight: 900;
+    font-size: 0.9rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .var-content .vt { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .var-content p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+  /* ── AUDIO PLAYER ───────────────────── */
+  .audio-intro {
+    background: linear-gradient(135deg, var(--ink) 0%, #2a1f18 100%);
+    border: 1px solid rgba(200,169,110,0.3);
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    margin: 1.8rem 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+  }
+
+  .audio-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(200,169,110,0.15);
+    border: 2px solid var(--warm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--warm);
+    font-size: 1.2rem;
+  }
+
+  .audio-info {
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .audio-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm);
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+
+  .audio-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 0.95rem;
+    color: var(--paper);
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+  }
+
+  .audio-desc {
+    font-size: 0.78rem;
+    color: #8a7a68;
+    line-height: 1.5;
+  }
+
+  .audio-player-wrap {
+    flex: 1;
+    min-width: 220px;
+  }
+
+  .audio-player-wrap audio {
+    width: 100%;
+    height: 36px;
+    border-radius: 20px;
+    outline: none;
+    accent-color: var(--warm);
+    filter: invert(0);
+  }
+
+  /* ── RESPONSIVE ─────────────────────── */
+  @media (max-width: 600px) {
+    .ch-header { flex-direction: column; gap: 1rem; }
+    .nav-btn { padding: 0 0.8rem; font-size: 0.78rem; }
+    .flow { flex-direction: column; align-items: flex-start; }
+    .flow-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════ -->
+<header>
+  <div class="header-inner">
+    <div class="logo">세상을 읽는 지혜 · 강다인</div>
+    <nav>
+      <button class="nav-btn active" onclick="goTo(0)" id="nav0">
+        <span class="step-num">1</span> 언행심리
+      </button>
+      <span class="nav-arrow">›</span>
+      <button class="nav-btn" onclick="goTo(1)" id="nav1">
+        <span class="step-num">2</span> 인연법
+      </button>
+      <span class="nav-arrow">›</span>
+      <button class="nav-btn" onclick="goTo(2)" id="nav2">
+        <span class="step-num">3</span> 운명론
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ══ HERO ════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-subtitle">학습 순서 안내</div>
+  <h1>말과 행동에서 운명을 읽다</h1>
+  <p>언행심리 → 인연법 → 운명론 순으로 학습하면<br>세상을 분석하는 완전한 공식이 완성됩니다.</p>
+  <div class="progress-bar-wrap">
+    <div class="progress-seg active" id="p0"></div>
+    <div class="progress-seg" id="p1"></div>
+    <div class="progress-seg" id="p2"></div>
+  </div>
+</div>
+
+<!-- ══ MAIN ════════════════════════════════════════════ -->
+<main>
+
+  <!-- ██ SECTION 1: 언행심리 ██ -->
+  <div class="section active" id="sec0">
+    <div class="ch-header">
+      <div class="ch-badge">一</div>
+      <div class="ch-meta">
+        <div class="ch-tag">Step 1 · 기초 분석 도구</div>
+        <h2 class="ch-title">언행심리공식</h2>
+        <p class="ch-desc">말과 행동으로 본질을 읽는 법 — 개인과 국가를 분석하는 가장 기본적인 출발점</p>
+        <div class="tags">
+          <span class="tag">언행 일치</span>
+          <span class="tag">본질 파악</span>
+          <span class="tag">국민성 분석</span>
+          <span class="tag">AI의 한계</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <p>사람의 말과 행동이 일치할 때와 불일치할 때를 구분하고, 현상의 이면에 숨겨진 맥락을 읽어내는 것이 언행심리 공식의 핵심이다.</p>
+    </div>
+
+    <!-- 언행심리 설명 오디오 -->
+    <div class="audio-intro">
+      <div class="audio-icon">🎙</div>
+      <div class="audio-info">
+        <div class="audio-label">강다인 해설 · 음성으로 듣기</div>
+        <div class="audio-title">언행심리란 무엇인가?</div>
+        <div class="audio-desc">강다인이 직접 설명하는 언행심리 공식의 핵심 개념</div>
+      </div>
+      <div class="audio-player-wrap">
+        <audio controls preload="none">
+          <source src="https://wisespring.github.io/intro/files/wa_explanation.mp3" type="audio/mpeg">
+          브라우저가 오디오를 지원하지 않습니다.
+        </audio>
+      </div>
+    </div>
+
+    <div class="sec-title">언행심리란 무엇인가</div>
+    <div class="card">
+      <div class="card-title"><span class="icon">✦</span> 공식의 정의</div>
+      <p>사람이 내뱉는 말과 그 말에 따르는 행동을 면밀히 관찰함으로써 그 사람의 <strong>본질</strong>, 나아가 그가 속한 집단과 사회의 본질을 파악하는 방법입니다. 어떤 사람이나 집단을 제대로 이해하려면 가장 먼저 본질을 파악해야 합니다. 본질을 먼저 풀어야만 그 사람이 앞으로 어떤 행동을 할지 예측할 수 있고, 그 사람이 처한 위치와 환경을 알면 미래의 행보도 자연스럽게 보입니다.</p>
+    </div>
+
+    <div class="highlight">
+      <div class="hl-label">핵심 원칙</div>
+      <p>말과 행동이 다를 때, 이를 <strong>'의심'이 아니라 '확인'</strong>해야 합니다. 상대의 행동에 이상함이 있을 때 의도가 있다고 판단하는 것은 의심이 아니라 객관적 검증의 과정입니다. "사람은 믿되 상황은 믿지 말라."</p>
+    </div>
+
+    <div class="sec-title">국민이 곧 국가다</div>
+    <div class="card">
+      <div class="card-title"><span class="icon">國</span> 언행심리의 확장 — 개인에서 국가로</div>
+      <p>국민들의 언행과 생활 습관은 단순한 개인의 특성을 넘어 그 국가의 사상과 구조, 그리고 미래의 명운을 결정짓는 핵심 지표입니다. 국민이 하는 말, 생각, 행동을 살펴보면 국가의 사상이 드러납니다. 국민들의 생활 환경, 활동 방식, 말과 행동의 패턴, 주변 환경을 종합하면 그 국가의 성격이 드러납니다. 이것이 문화이고, 곧 그 나라의 정체성입니다.</p>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title"><span class="icon">↑</span> 국민 위의 국가</div>
+        <p>특정 국가에서는 국가가 국민을 지배하는 구조가 형성되어 국민 개개인의 사상이 통일되는 경향을 보입니다. 모든 사람의 생각이 하나로 수렴된다면, 그것은 국가가 개인의 사상을 장악한 결과입니다.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">↑</span> 국가 위의 국민</div>
+        <p>긴 역사 속에서 민중이 스스로 권리를 쟁취해온 투쟁의 역사를 통해 '국민이 국가 위에 있는' 자주적 구조를 형성한 나라도 있습니다. 국가와 국민의 관계는 각 나라의 본질을 이해하는 중요한 잣대입니다.</p>
+      </div>
+    </div>
+
+    <div class="sec-title">관찰의 방법 — 일상 속 패턴 읽기</div>
+    <div class="card">
+      <div class="card-title"><span class="icon">👁</span> 분석은 일상에서 시작된다</div>
+      <p>분석은 거창한 곳에서 시작하지 않습니다. 길을 걷다가 눈에 띄는 현상, 사람들이 무심코 내뱉는 말, 시장의 상권 구조, 옷차림과 식생활, 사는 집의 모양새 — 이 모든 것이 국민성을 이루는 단편들입니다. 중요한 것은 '그냥 보고 지나치지 않는 것'입니다.</p>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title"><span class="icon">①</span> 일상에서 질문하기</div>
+        <p>밥을 먹으러 가서도 <em>"왜 이 메뉴가 여기 있을까?"</em>를 생각하고, 여행지에서도 <em>"이 나라 사람들은 왜 이런 행동을 할까?"</em>를 탐구하는 습관이 그 시작입니다. 특이한 현상을 발견했을 때 '신기하다'는 감탄에서 그치지 않고 끊임없이 '왜'를 묻습니다.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">②</span> 구조를 향한 질문</div>
+        <p><em>"왜 이런 현상이 생겼을까?"</em> <em>"이 국가는 왜 이런 시스템을 만들었을까?"</em> 개별 현상을 넘어 그것을 만들어낸 구조와 역사적 맥락을 향해 질문을 던지는 것이 언행심리 분석의 핵심 방법입니다.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">③</span> 교차 검증</div>
+        <p>과거와 현재를 교차 검증하여 말과 행동이 일치하는지 확인합니다. 그 사람이 과거에 어떻게 행동했는지를 보면 현재 그가 나를 속이는지 아닌지 알 수 있습니다. 과거가 현재를 검증합니다.</p>
+      </div>
+    </div>
+
+    <div class="sec-title">국가별 언행심리 심층 분석</div>
+
+    <!-- 일본 -->
+    <div class="country-block" style="border-left: 4px solid #c0392b; padding-left: 1.2rem; margin-bottom: 2rem;">
+      <div class="country-header" style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1rem;">
+        <div style="width:40px;height:40px;border-radius:50%;background:#c0392b;color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">日</div>
+        <div>
+          <div style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:#c0392b;font-weight:700;">JAPAN</div>
+          <div style="font-family:'Noto Serif KR',serif;font-size:1.1rem;font-weight:700;">일본 — 순종과 가스라이팅의 문화</div>
+        </div>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title" style="color:#c0392b"><span class="icon" style="background:#c0392b">⚑</span> 총·칼 없는 독재</div>
+          <p>진정한 독재는 물리적 강압이 아니라 자발적 순종에서 완성됩니다. 일본은 국가 차원의 거대한 '가스라이팅'으로 국민 스스로 시스템에 순응하게 만드는 구조를 완성했습니다. 억울한 판결이나 결정조차 <em>"내가 잘못했겠지"</em>라며 받아들이는 것이 그 결과입니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color:#c0392b"><span class="icon" style="background:#c0392b">心</span> 순종의 내면화</div>
+          <p>억울한 일을 당해도 결과를 받아들이고, 부당하다고 느껴도 자신이 잘못한 부분을 찾아 수긍합니다. 감정·재산·생활 모든 면에서 '각자 알아서' 해결하는 문화가 정착되어, 국가 시스템에 대한 저항보다는 순응을 유도합니다.</p>
+        </div>
+      </div>
+      <div class="highlight" style="border-color:rgba(192,57,43,0.4);background:linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02));">
+        <div class="hl-label" style="color:#c0392b;">핵심 구조</div>
+        <p><strong>국가가 국민 위에 군림</strong> — 개개인의 존재 자체를 존중하는 문화를 접했을 때 일본인들이 깊은 인상을 받는 것은, 자국에서는 국가의 목적을 위해 개인의 존엄성이 희생되는 구조가 역사적으로 내재되어 있기 때문입니다.</p>
+      </div>
+    </div>
+
+    <!-- 중국 -->
+    <div class="country-block" style="border-left: 4px solid #e67e22; padding-left: 1.2rem; margin-bottom: 2rem;">
+      <div class="country-header" style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1rem;">
+        <div style="width:40px;height:40px;border-radius:50%;background:#e67e22;color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">中</div>
+        <div>
+          <div style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:#e67e22;font-weight:700;">CHINA</div>
+          <div style="font-family:'Noto Serif KR',serif;font-size:1.1rem;font-weight:700;">중국 — 실리주의와 반독재(半獨裁) 시스템</div>
+        </div>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title" style="color:#e67e22"><span class="icon" style="background:#e67e22">¥</span> "돈이 신이다"</div>
+          <p>중국 사회는 '돈이 신이다'라는 철저한 실리주의 사상이 전반에 깔려 있습니다. 어떤 방법으로 돈을 벌든 그 결과 자체를 중시하며, 도덕적 잣대보다는 경제적 실리를 우선시하는 경향이 사회를 움직이는 강력한 동력으로 작용합니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color:#e67e22"><span class="icon" style="background:#e67e22">半</span> 반독재 체제의 이유</div>
+          <p>중국은 사상이 하나로 통일된 공산주의라기보다, 개개인의 생각이 살아있는 '가짜 공산국가'의 성격을 띱니다. 국민들이 실리를 따르기 때문에 질서 유지를 위해 강력한 통제가 필요하고, 부패 공직자를 공개 처형하는 것은 '선을 넘는 사례'를 본보기로 삼아 사회적 통제력을 유지하는 전략입니다.</p>
+        </div>
+      </div>
+      <div class="highlight" style="border-color:rgba(230,126,34,0.4);background:linear-gradient(135deg,rgba(230,126,34,0.07),rgba(230,126,34,0.02));">
+        <div class="hl-label" style="color:#e67e22;">핵심 구조</div>
+        <p><strong>완전한 독재가 아닌 반독재</strong> — 강력한 국가 통제와 개인의 실리 추구가 공존하는 독특한 시스템. 이념보다 경제, 명분보다 실리가 모든 것을 결정합니다.</p>
+      </div>
+    </div>
+
+    <!-- 미국 -->
+    <div class="country-block" style="border-left: 4px solid #2980b9; padding-left: 1.2rem; margin-bottom: 2rem;">
+      <div class="country-header" style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1rem;">
+        <div style="width:40px;height:40px;border-radius:50%;background:#2980b9;color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">美</div>
+        <div>
+          <div style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:#2980b9;font-weight:700;">USA</div>
+          <div style="font-family:'Noto Serif KR',serif;font-size:1.1rem;font-weight:700;">미국 — 포장지 속에 가려진 약탈적 본질</div>
+        </div>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title" style="color:#2980b9"><span class="icon" style="background:#2980b9">★</span> 트럼프가 드러낸 민낯</div>
+          <p>트럼프의 등장은 미국이 그동안 '신사의 나라'라는 화려한 포장지로 숨겨왔던 본질이 수면 위로 올라온 사건입니다. 미국의 역사는 원주민의 땅을 빼앗고 노예 노동으로 부를 축적하며 타국의 자원을 착취하는 과정과 분리할 수 없으며, 그 본질은 '약탈과 협박'으로 요약됩니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color:#2980b9"><span class="icon" style="background:#2980b9">⚠</span> 포장과 실체의 괴리</div>
+          <p>미국이 선진국이라는 인식은 상당 부분 미디어와 영화를 통해 만들어진 포장에서 비롯됩니다. 그러나 실제 국민 생활을 들여다보면 노후화된 인프라, 높은 범죄율, 불안한 치안 등 한국보다 못한 단면이 적지 않습니다. 당장 배고프다고 남의 것을 빼앗아 먹는 방식은 결국 국가 전체를 멈추게 합니다.</p>
+        </div>
+      </div>
+      <div class="highlight" style="border-color:rgba(41,128,185,0.4);background:linear-gradient(135deg,rgba(41,128,185,0.07),rgba(41,128,185,0.02));">
+        <div class="hl-label" style="color:#2980b9;">핵심 구조</div>
+        <p><strong>이미지와 실체의 괴리</strong> — 일본이 '잃어버린 30년'을 겪었듯, 과거의 영광에 갇혀 변화를 거부하는 미국 역시 어느 순간 뒤처진 자신을 발견할 위험이 있습니다. 포장지가 벗겨지는 과정은 이미 시작됐습니다.</p>
+      </div>
+    </div>
+
+    <!-- 한국 -->
+    <div class="country-block" style="border-left: 4px solid var(--warm); padding-left: 1.2rem; margin-bottom: 2rem;">
+      <div class="country-header" style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1rem;">
+        <div style="width:40px;height:40px;border-radius:50%;background:var(--warm);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">韓</div>
+        <div>
+          <div style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--warm);font-weight:700;">KOREA</div>
+          <div style="font-family:'Noto Serif KR',serif;font-size:1.1rem;font-weight:700;">한국 — 자주성과 양심의 나라</div>
+        </div>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title"><span class="icon">自</span> 국민이 국가 위에 있는 구조</div>
+          <p>대한민국은 세계에서 유일하게 '국민이 국가 위에 있는' 자주적 구조를 가진 나라입니다. 한국 국민은 역사적으로 민중의 투쟁을 통해 스스로 권리를 쟁취해 온 자주적 성향을 가지고 있으며, 이것이 국가가 국민을 함부로 지배하거나 억압하려는 시도에 정면으로 맞서는 힘의 원천입니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="icon">⚡</span> 지도층을 압도하는 국민성</div>
+          <p>현재 한국 사회는 국민의 소비력과 문화적 수준이 매우 높아 지도층의 수준을 압도하는 상태에 이르렀습니다. 수준 높은 국민은 설득과 조작이 어렵고, 부당한 권력에 저항하는 역량이 강합니다. 이것이 역설적으로 지배 세력에게 위협이 됩니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="icon">義</span> 독립군 정신</div>
+          <p>한국인은 강압적인 법이나 통제가 없어도 스스로 질서를 지키는 '양심'을 가진 국민입니다. 만약 지도층이 국가 시스템을 파괴하고 국민을 억압하려 한다면, 결국 국민 사이에서 수많은 '독립군'이 나타날 것입니다. 억압이 강해질수록 저항의 에너지도 강해집니다.</p>
+        </div>
+      </div>
+      <div class="highlight">
+        <div class="hl-label">핵심 구조</div>
+        <p><strong>높은 국민성 = 방어 기제</strong> — 한국의 높은 국민 의식은 권력의 부당한 시스템 파괴를 알아차리는 통찰력이자, 그에 굴복하지 않고 새로운 질서를 만들어내는 저력입니다. 이것이 다른 어떤 나라에서도 찾아보기 어려운 한국만의 본질입니다.</p>
+      </div>
+    </div>
+
+    <div class="sec-title">AI의 한계 vs 인간 통찰</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title" style="color:#888">AI의 한계</div>
+        <p>겉으로 드러난 '현상'을 보고 종합할 뿐, 이면의 '본질'을 파고드는 능력이 부족합니다. 나쁜 의도를 가진 사람을 좋은 사람으로, 혹은 그 반대로 잘못 평가할 위험이 있습니다. 의도된 속임수(야바이)를 감지하지 못하며, 전례 없는 사건은 예측 범위 밖에 놓입니다.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">✦</span> 인간 통찰의 힘</div>
+        <p>그 사람의 사상, 위치, 욕망, 환경을 종합해 내면의 논리를 따라감으로써 미래 행동을 예측합니다. 가짜와 진짜를 구분하고, 과거와 현재를 교차 검증하며 속임수의 흔적을 찾아내는 것은 인간의 직관과 오랜 경험에서 비롯된 통찰의 영역입니다.</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hl-label">언행심리가 필요한 이유</div>
+      <p>언행심리를 먼저 터득해야 그다음 단계인 이해관계 분석(인연법)이 보입니다. <strong>사람 하나도 제대로 파악하지 못하는데 어떻게 이해관계를 풀 수 있겠는가?</strong> 언행심리는 모든 분석의 기초입니다. AI가 아무리 발전해도 인간의 본질을 꿰뚫는 통찰을 완전히 대체할 수 없는 이유가 여기에 있습니다.</p>
+    </div>
+
+    <div class="nav-footer">
+      <button class="btn btn-ghost" disabled>← 이전</button>
+      <button class="btn btn-primary" onclick="goTo(1)">다음: 인연법 →</button>
+    </div>
+  </div>
+
+  <!-- ██ SECTION 2: 인연법 ██ -->
+  <div class="section" id="sec1">
+    <div class="ch-header">
+      <div class="ch-badge">二</div>
+      <div class="ch-meta">
+        <div class="ch-tag">Step 2 · 이해관계 분석</div>
+        <h2 class="ch-title">인연법 방정식</h2>
+        <p class="ch-desc">운명은 혼자 완성되지 않는다 — 기질, 인연, 그리고 무리의 흥망에 관한 과학적 공식</p>
+        <div class="tags">
+          <span class="tag">유유상종</span>
+          <span class="tag">이해관계</span>
+          <span class="tag">집단 운명</span>
+          <span class="tag">만남의 시점</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <p>인간의 운명은 단순히 개인의 노력으로 결정되는 것이 아니라, 타인과의 만남(인연)과 그 기운이 모여 결과가 만들어지는 과학적인 공식과 같다.</p>
+    </div>
+
+    <div class="sec-title">인연법 방정식의 4가지 변수</div>
+
+    <div class="var-card">
+      <div class="var-num">1</div>
+      <div class="var-content">
+        <div class="vt">선천적 운명 先天的 運命 — 상수(常數)</div>
+        <p>사주팔자로 대표되는 타고난 기질, 욕망의 방향, 성향의 강도. 쉽게 바뀌지 않는 고정된 값입니다. 환경이나 교육이 다듬을 수는 있어도 본질을 바꾸기는 어렵습니다.</p>
+      </div>
+    </div>
+    <div class="var-card">
+      <div class="var-num">2</div>
+      <div class="var-content">
+        <div class="vt">만남의 시점 時點 — 필연</div>
+        <p>같은 성질의 운명을 가진 사람들이 교차하는 특정 순간. 우연처럼 보이지만 인연법의 관점에서는 필연입니다. 비슷한 욕심을 가진 인물들은 자석처럼 서로를 끌어당깁니다.</p>
+      </div>
+    </div>
+    <div class="var-card">
+      <div class="var-num">3</div>
+      <div class="var-content">
+        <div class="vt">기운의 증폭 增幅</div>
+        <p>개별적으로는 제한적이던 기질과 욕망이, 같은 성질의 타인과 만남으로써 상호 강화되는 과정. 악운을 가진 자들이 모이면 악운이 배가됩니다.</p>
+      </div>
+    </div>
+    <div class="var-card">
+      <div class="var-num">4</div>
+      <div class="var-content">
+        <div class="vt">운명의 완성 完成</div>
+        <p>이 모든 과정이 수렴하는 최종 결과. 개인의 운명이 무리의 운명과 맞물려 하나의 결말로 마무리됩니다. 운명은 반드시 타인과의 만남을 통해 완성됩니다.</p>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step"><span>1단계</span>타고난 기질</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span>2단계</span>같은 기운 만남</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span>3단계</span>기운 증폭</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span>4단계</span>운명 완성</div>
+    </div>
+
+    <div class="sec-title">유유상종 — 악운을 부르는 무리의 형성</div>
+    <div class="card">
+      <div class="card-title"><span class="icon">類</span> 같은 기운끼리 모이는 법칙</div>
+      <p>같은 욕망은 같은 것에 끌리기 때문에 의식적인 계획 없이도 특정 시점에 같은 자리에 모입니다. 사리사욕이라는 공통된 에너지를 가진 인물들은 자석처럼 서로를 끌어당겨 집단적 운명을 형성합니다. 혼자였다면 억제되었을 욕망이, 같은 욕망을 가진 타인의 존재로 인해 정당성을 얻고 강화됩니다.</p>
+    </div>
+
+    <div class="sec-title">무리 안의 역할 분석</div>
+    <div class="person-grid">
+      <div class="person-card">
+        <div class="name">설계자</div>
+        <div class="role">핵심 주체</div>
+        <p>판을 짜고 이미지를 만들며 집단의 방향성을 설정합니다. 무리의 몰락과 함께 가장 큰 것을 잃습니다.</p>
+      </div>
+      <div class="person-card">
+        <div class="name">싸움꾼</div>
+        <div class="role">전투 역할</div>
+        <p>외부와의 충돌을 담당합니다. 무리가 해체되면 원래 자리(무)로 돌아갑니다.</p>
+      </div>
+      <div class="person-card">
+        <div class="name">포장재</div>
+        <div class="role">이미지 역할</div>
+        <p>이념의 포장지 역할을 담당합니다. 무리가 무너지면 원래 상태로 귀환합니다.</p>
+      </div>
+      <div class="person-card">
+        <div class="name">장난감</div>
+        <div class="role">수동적 도구</div>
+        <p>왕관만 씌워주면 만족하는 수동적 성향. 조종당하다가 결국 아무것도 주도하지 못한 채 모든 것을 잃습니다.</p>
+      </div>
+    </div>
+
+    <div class="sec-title">몰락의 두 가지 형태</div>
+    <table class="styled-table">
+      <thead>
+        <tr><th>형태</th><th>대상</th><th>결말</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>무(無)로 돌아가는 자</strong></td>
+          <td>중심 인물에 의해 '키워진' 추종자</td>
+          <td>원래 아무것도 없던 상태로 귀환. 빌렸다가 반납하는 구조</td>
+        </tr>
+        <tr>
+          <td><strong>모든 것을 잃는 자</strong></td>
+          <td>직접 쌓아 올린 핵심 주체 및 장난감</td>
+          <td>막대한 부·권력·명예를 한순간에 잃는 비극적 결말</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="sec-title">인연법이 가르쳐 주는 삶의 태도</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title"><span class="icon">自</span> 자기 인식</div>
+        <p>내 안의 욕망이 어느 방향을 향하고 있는지, 내가 어떤 사람들에게 끌리고 있는지 의식합니다. 자기 인식이 없으면 자신도 모르는 사이에 악운의 무리 속으로 걸어 들어갑니다.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">緣</span> 관계의 선별</div>
+        <p>'누구와 함께하느냐'가 운명에 결정적 영향을 미칩니다. 좋은 기운을 가진 사람들과의 만남은 내 운명을 좋은 방향으로 증폭시킵니다.</p>
+      </div>
+    </div>
+
+    <div class="nav-footer">
+      <button class="btn btn-ghost" onclick="goTo(0)">← 언행심리</button>
+      <button class="btn btn-primary" onclick="goTo(2)">다음: 운명론 →</button>
+    </div>
+  </div>
+
+  <!-- ██ SECTION 3: 운명론 ██ -->
+  <div class="section" id="sec2">
+    <div class="ch-header">
+      <div class="ch-badge">三</div>
+      <div class="ch-meta">
+        <div class="ch-tag">Step 3 · 거시 분석 체계</div>
+        <h2 class="ch-title">운명론</h2>
+        <p class="ch-desc">내 삶을 만드는 지혜와 세상을 보는 비법 — 과거·현재·미래를 연결하는 시간의 법칙</p>
+        <div class="tags">
+          <span class="tag">국운 분석</span>
+          <span class="tag">중도의 역할</span>
+          <span class="tag">시간의 법칙</span>
+          <span class="tag">청산의 시간</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <p>과거는 현재를 반영하고, 현재는 미래를 투영한다.</p>
+    </div>
+
+    <div class="sec-title">세 가지 분석 툴의 종합 체계</div>
+    <div class="card">
+      <div class="card-title"><span class="icon">★</span> 공식의 완성</div>
+      <p>운명론을 기반으로, 그 위에 인연법이 들어가고, 개개인의 언행심리가 더해집니다. 정세를 거의 완벽하게 예측하는 데에는 분명한 공식이 있습니다: <strong>운명(큰 흐름) + 인연법(이해관계) + 언행심리(개인 분석)</strong>. 이 세 가지가 합쳐져서 세상의 흐름을 읽습니다.</p>
+    </div>
+
+    <div class="flow" style="margin: 1.5rem 0;">
+      <div class="flow-step"><span>가장 크게</span>운명론<br><small style="font-size:0.7rem;opacity:0.7">국가·시대</small></div>
+      <div class="flow-arrow">⊃</div>
+      <div class="flow-step"><span>그 안에</span>인연법<br><small style="font-size:0.7rem;opacity:0.7">무리·이해관계</small></div>
+      <div class="flow-arrow">⊃</div>
+      <div class="flow-step"><span>가장 작게</span>언행심리<br><small style="font-size:0.7rem;opacity:0.7">개인 분석</small></div>
+    </div>
+
+    <div class="sec-title">시간의 법칙과 미래 예측</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title"><span class="icon">過</span> 과거 → 현재</div>
+        <p>과거 없이는 현재를 제대로 풀 수 없습니다. 그 사람이 과거에 어떻게 행동했는지를 보면 현재 그가 나를 속이는지 아닌지 알 수 있습니다. 자신의 과거가 자신을 치는 격이 바로 이 원리입니다.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">現</span> 현재 → 미래</div>
+        <p>현재를 잘 읽으면 미래가 보입니다. 운명을 거스르려 하면 역풍을 맞게 되어 있습니다. 운명의 흐름과 함께 가는 자와 거스르는 자의 결말은 다릅니다.</p>
+      </div>
+    </div>
+
+    <div class="sec-title">중도가 나라를 구한다</div>
+    <div class="card">
+      <div class="card-title"><span class="icon">中</span> 중도의 본질</div>
+      <p>중도의 마음은 진정으로 나라를 구하고자 하는 마음입니다. 먹고사는 문제(민생)를 중시하면서도 기본을 지키며 나라를 중심에 두는 태도입니다. 극좌와 극우는 이념에 사로잡혀 눈과 귀가 가려져 있지만, 중도는 정상적인 생각을 가지고 있어 상황을 정상적으로 볼 줄 압니다.</p>
+    </div>
+
+    <table class="styled-table">
+      <thead>
+        <tr><th>세력</th><th>본질</th><th>행동 방식</th><th>운명</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>극좌</strong></td>
+          <td>사리사욕 (진보를 가장)</td>
+          <td>착한 척하면서 몰래 야바위</td>
+          <td>청산 대상</td>
+        </tr>
+        <tr>
+          <td><strong>극우</strong></td>
+          <td>사리사욕 (보수를 가장)</td>
+          <td>대놓고 욕심을 채움</td>
+          <td>청산 대상</td>
+        </tr>
+        <tr>
+          <td><strong>중도 (~40%)</strong></td>
+          <td>나라를 중심에 두는 마음</td>
+          <td>위기 시 각성하여 저항</td>
+          <td>국운의 핵심 에너지</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="sec-title">청산의 시간 — 지금 진행 중인 것</div>
+    <div class="highlight">
+      <div class="hl-label">현재 진행형 과정</div>
+      <p>사회 곳곳에 숨어 있던 '썩은 뿌리'와 '적폐'가 수면 위로 떠오르는 시기입니다. 청산을 하려면 이들이 먼저 수면 위로 떠올라야 합니다. 보이지 않는 것을 어떻게 뽑아내겠습니까? 이들이 스스로 모습을 드러낼 때, 비로소 제거할 명분이 생깁니다.</p>
+    </div>
+
+    <div class="sec-title">리더 성향 분석 — 인물로 보는 정세</div>
+    <div class="person-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
+      <div class="person-card" style="border-top-color: var(--muted);">
+        <div class="name">불나방형</div>
+        <div class="role">착각에 빠진 유형</div>
+        <p>과거 10년 성공 경험 때문에 변화된 환경을 무시합니다. 자신의 욕망이 스스로를 태울 '불덩어리'임을 알면서도 멈추지 못합니다. 한순간에 무너집니다.</p>
+      </div>
+      <div class="person-card" style="border-top-color: var(--muted);">
+        <div class="name">망상형</div>
+        <div class="role">이룰 수 없는 꿈</div>
+        <p>과거 성공에 취해 자신만의 세상을 계획하지만 현실적으로 불가능한 목표를 추구합니다. 배신자 기질을 내재하고 있습니다.</p>
+      </div>
+      <div class="person-card" style="border-top-color: var(--muted);">
+        <div class="name">배우형</div>
+        <div class="role">왕관을 쓰고 싶은 자</div>
+        <p>뚜렷한 철학 없이 타인이 세워놓은 무대에서 연기합니다. 조종당하는 배우로, 결국 스스로 아무것도 주도하지 못한 채 모든 것을 잃습니다.</p>
+      </div>
+      <div class="person-card" style="border-top-color: var(--warm);">
+        <div class="name">국운의 중심</div>
+        <div class="role">시대의 소명을 가진 자</div>
+        <p>국민과 같이 가는 마음을 가지며 목숨을 걸고 국민의 뜻을 받드는 인물. 개인 역량·국민과의 합·시대적 소명이 결합된 결과입니다.</p>
+      </div>
+    </div>
+
+    <div class="sec-title">지혜로운 삶을 위한 실천</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title"><span class="icon">1</span> 언행심리 익히기</div>
+        <p>말과 행동을 통해 사람을 이해하는 것이 첫 번째 단계입니다. 모든 것이 오랜 시간 동안 체화되면 자연스러워집니다.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">2</span> 환경을 살피기</div>
+        <p>인간은 환경의 지배를 받습니다. 사람은 믿되 그 사람의 현재 상황을 항상 살피고, 말과 행동이 일치하는지 확인해야 합니다.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">3</span> 욕망을 다스리기</div>
+        <p>"욕심 내지 마라. 내 것이 아닌 것에 손대지 마라." 자신의 욕망을 다스리는 것이 무엇보다 중요합니다. 사기꾼은 사람의 욕망을 건드립니다.</p>
+      </div>
+    </div>
+
+    <div class="highlight" style="border-color: var(--accent); background: linear-gradient(135deg, rgba(139,46,26,0.08), rgba(139,46,26,0.02));">
+      <div class="hl-label" style="color: var(--accent);">학습 완성 — 세 가지 공식의 통합</div>
+      <p><strong>언행심리</strong>로 개인의 본질을 파악하고 → <strong>인연법</strong>으로 이해관계와 집단의 흐름을 분석하며 → <strong>운명론</strong>으로 시대와 국가의 큰 흐름을 읽는다. "세상은 복잡해 보이지만, 그 이치를 깨닫고 나면 의외로 단순하다."</p>
+    </div>
+
+    <div class="nav-footer">
+      <button class="btn btn-ghost" onclick="goTo(1)">← 인연법</button>
+      <button class="btn btn-primary" onclick="goTo(0)">처음부터 다시 →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  let current = 0;
+
+  function goTo(idx) {
+    // hide all sections
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.progress-seg').forEach(s => {
+      s.classList.remove('active', 'done');
+    });
+
+    // activate target
+    document.getElementById('sec' + idx).classList.add('active');
+    document.getElementById('nav' + idx).classList.add('active');
+
+    // progress
+    for (let i = 0; i < 3; i++) {
+      const seg = document.getElementById('p' + i);
+      if (i < idx) seg.classList.add('done');
+      else if (i === idx) seg.classList.add('active');
+    }
+
+    current = idx;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
